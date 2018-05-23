@@ -1,0 +1,25 @@
+# Example: api/ldap/user/session
+wscontent.request:
+  path: 'wsc/{source}/{type}/{format}/{query}'
+  defaults:
+    _controller: 'Drupal\wscontent\Controller\WscController::content'
+    _title: 'Formatted Content'
+    source: ''
+    type: ''
+    format: ''
+    query: ''
+    json: false
+  requirements:
+    _permission: 'access webservice content'
+wscontent.jsonrequest:
+  path: 'wscjson/{source}/{type}/{format}/{query}'
+  defaults:
+    _controller: 'Drupal\wscontent\Controller\WscController::content'
+    _title: 'Formatted Content'
+    source: ''
+    type: ''
+    format: ''
+    query: ''
+    json: true
+  requirements:
+    _permission: 'access webservice content'

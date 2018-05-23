@@ -1,0 +1,6 @@
+wscontent:
+  serve_request:
+    allowed_ws:
+      web:
+        drupal:
+          profile: 'wscontent.default'

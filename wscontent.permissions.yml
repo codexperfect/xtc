@@ -1,0 +1,10 @@
+administer webservice content:
+  title: 'Administer WebService Content'
+  description: 'Allow to access the administration pages to configure WebService Content settings.'
+  restrict access: true
+
+access webservice content:
+  title: 'Access WebService Content'
+  description: 'Allow to access WebService Content settings through Web services.'
+  restrict access: true
+
