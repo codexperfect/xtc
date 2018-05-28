@@ -1,6 +1,6 @@
-name: "WebService Content"
+name: "Extended Content"
 type: module
-description: "Manage access to Webservice content."
+description: "Extended Content provides access to external content do Drupal."
 core: '8.x'
 package: "WebService Content"
 dependencies: []

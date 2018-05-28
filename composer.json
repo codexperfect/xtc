@@ -1,15 +1,20 @@
 {
-    "name": "drupal/wscontent",
-    "type": "drupal-module",
-    "description": "Manage contents from WebService.",
-    "keywords": ["Drupal"],
-    "license": "GPL-2.0+",
-    "homepage": "https://www.drupal.org/project/wscontent",
-    "minimum-stability": "dev",
-    "support": {
-        "issues": "https://www.drupal.org/project/issues/wscontent",
-        "source": "http://cgit.drupalcode.org/wscontent"
-    },
-    "require": {
+  "name": "drupal/xtc",
+  "type": "drupal-module",
+  "description": "Extended Content provides access to external content from Drupal.",
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/xtc",
+  "authors": [
+    {
+      "name": "Alexandre Israël",
+      "homepage": "https://www.drupal.org/u/w3wfr"
     }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/xtc",
+    "source": "http://cgit.drupalcode.org/xtc"
+  },
+  "require": {
+    "friendsofsymfony/elastica-bundle": "5.*"
+  }
 }
