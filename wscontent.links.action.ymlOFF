@@ -1,5 +1,0 @@
-entity.vimeo_entity.add_form:
-  route_name: entity.vimeo_entity.add_form
-  title: 'Ajouter une vidéo Vimeo'
-  appears_on:
-    - entity.vimeo_entity.collection

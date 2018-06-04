@@ -1,0 +1,6 @@
+xtc:
+  serve_request:
+    allowed_ws:
+      web:
+        drupal:
+          profile: 'xtc.default'
