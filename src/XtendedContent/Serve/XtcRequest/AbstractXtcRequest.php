@@ -148,6 +148,7 @@ class AbstractXtcRequest implements XtcRequestInterface
   {
     if(!isset($this->data)){
       $this->data = '{}';
+      dump(json_decode($this->data));
     }
     switch ($format){
       case 'object':
