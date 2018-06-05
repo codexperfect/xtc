@@ -72,10 +72,11 @@ class DummyClient extends AbstractClient
     return $this;
   }
 
-  //  private function getDummyData($param = ''){
   public function getDummyData(){
-    $content = file_get_contents($this->options['path']);
-    $content = (isset($content)) ? $content : '';
+    if(!($content = file_get_contents($this->options['path'])) ){
+      dump($content);
+      $content = (isset($content)) ? $content : '';
+    }
     switch ($this->getInfo('format')){
       case 'csv':
         $this->content = $this->getCsvContent($content);
