@@ -122,8 +122,8 @@ class AbstractXtcRequest implements XtcRequestInterface
   public function setConfigFromYaml()
   {
     $client = Config::getConfigs('serve', 'client');
-    $XtcRequest = Config::getConfigs('serve', 'GuzzleXtcRequest');
-    $this->config = array_merge_recursive($client, $XtcRequest);
+    $xtcrequest = Config::getConfigs('serve', 'xtcrequest');
+    $this->config = array_merge_recursive($client, $xtcrequest);
     $this->setWebservice();
     $this->buildClient();
     return $this;
