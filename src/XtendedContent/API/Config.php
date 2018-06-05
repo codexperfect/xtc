@@ -30,6 +30,7 @@ class Config
       $configs[] = \Drupal::config($config)->getRawData()['xtcontent'];
     }
 
+    dump($configs);
     $config = [];
     foreach ($configs as $conf){
       $current = array_shift($configs);
