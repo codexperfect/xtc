@@ -1,4 +1,4 @@
-name: "Extended Content"
+name: "Xtended Content"
 type: module
 description: "Extended Content provides access to external content to Drupal."
 core: '8.x'

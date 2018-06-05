@@ -136,7 +136,7 @@ class AbstractXtcRequest implements XtcRequestInterface
   {
     $this->webservice = array_merge_recursive(
       $this->config['xtc']['serve_client'][$this->profile],
-      $this->config['xtc']['serve_XtcRequest'][$this->profile]
+      $this->config['xtc']['serve_xtcrequest'][$this->profile]
       );
     return $this;
   }
