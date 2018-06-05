@@ -96,7 +96,7 @@ class HttpClient extends AbstractClient
    */
   public function getToken() : string
   {
-    return $this->clientProfile['token'];
+    return ($this->clientProfile['token']) ? $this->clientProfile['token'] : '';
   }
 
   /**
