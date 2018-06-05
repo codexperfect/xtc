@@ -26,6 +26,7 @@ class Config
 
   private static function mergeConfig($work, $task){
     $xtcList = self::getList($work, $task);
+    dump($xtcList);
     foreach ($xtcList as $key => $config){
       $configs[] = \Drupal::config($config)->getRawData()['xtcontent'];
     }
@@ -36,6 +37,7 @@ class Config
       $current = array_shift($configs);
       $config = array_merge_recursive($config, $current);
     }
+    dump($config);
 
     return $config;
   }
