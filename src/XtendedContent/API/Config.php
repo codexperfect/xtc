@@ -31,18 +31,18 @@ class Config
       $configs[] = \Drupal::config($config)->getRawData()['xtcontent'];
     }
 
+    $config = [];
     if(isset($configs)){
       dump($configs);
+      foreach ($configs as $conf){
+        $current = array_shift($configs);
+        $config = array_merge_recursive($config, $current);
+      }
+      dump($config);
     }
     else {
       dump($task);
     }
-    $config = [];
-    foreach ($configs as $conf){
-      $current = array_shift($configs);
-      $config = array_merge_recursive($config, $current);
-    }
-    dump($config);
 
     return $config;
   }
