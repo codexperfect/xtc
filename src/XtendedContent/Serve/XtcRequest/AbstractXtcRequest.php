@@ -146,12 +146,6 @@ class AbstractXtcRequest implements XtcRequestInterface
    */
   public function getData($format = 'json')
   {
-    dump($this->data);
-    if(!isset($this->data)){
-      $this->data = '';
-    }
-    dump($this->data);
-    dump("-----");
     switch ($format){
       case 'object':
         return json_decode($this->data);
