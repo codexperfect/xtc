@@ -11,7 +11,7 @@ namespace Drupal\xtc\XtendedContent\Serve\XtcRequest;
 
 use Drupal\xtc\XtendedContent\API\Config;
 use Drupal\xtc\XtendedContent\Serve\Client\DummyClient;
-use Drupal\xtc\XtendedContent\Serve\Client\ESClient;
+use Drupal\xtc\XtendedContent\Serve\Client\ElasticaClient;
 use Drupal\xtc\XtendedContent\Serve\Client\HttpClient;
 use Drupal\xtc\XtendedContent\Serve\Client\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -49,7 +49,7 @@ class AbstractXtcRequest implements XtcRequestInterface
           $this->client = new DummyClient($this->profile);
           break;
         case 'elasticsearch':
-          $this->client = new ESClient($this->profile);
+          $this->client = new ElasticaClient($this->profile);
           break;
         case 'guzzle':
         default:

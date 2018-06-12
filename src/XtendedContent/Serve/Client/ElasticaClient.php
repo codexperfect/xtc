@@ -9,7 +9,7 @@
 namespace Drupal\xtc\XtendedContent\Serve\Client;
 
 
-class ESClient extends AbstractClient
+class ElasticaClient extends AbstractClient
 {
 
 }
