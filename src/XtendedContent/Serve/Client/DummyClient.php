@@ -43,24 +43,6 @@ class DummyClient extends AbstractClient
   }
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
-   */
-  public function setXtcConfigFromYaml() : ClientInterface {
-    $client = Config::getConfigs('serve', 'client');
-    $this->xtcConfig = array_merge_recursive($client);
-    $this->buildClient();
-    return $this;
-  }
-
-  /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
-   */
-  protected function buildClient() : ClientInterface {
-    $this->setOptions();
-    return $this;
-  }
-
-  /**
    * @param string $method
    * @param string $param
    *
@@ -73,26 +55,49 @@ class DummyClient extends AbstractClient
   }
 
   public function getDummyData(){
-    if(file_exists($this->options['path'])){
-      $content = file_get_contents($this->options['path']);
-    }
-    $content = (isset($content)) ? $content : '';
     switch ($this->getInfo('format')){
       case 'csv':
-        $this->content = $this->getCsvContent($content);
+        $this->getCsvData();
         break;
       case 'txt':
-        $this->content = $content;
+        $this->getTxtData();
         break;
       case 'yaml':
-        $this->content = Yaml::decode($content);
+        $this->getYamlData();
         break;
       case 'json':
-        $this->content = Json::decode($content);
+        $this->getJsonData();
         break;
       default:
         $this->content =  '';
     }
+    return $this;
+  }
+
+  private function getContent(){
+    if(file_exists($this->options['path'])){
+      $content = file_get_contents($this->options['path']);
+    }
+    return (isset($content)) ? $content : '';
+  }
+
+  public function getCsvData(){
+    $this->content = $this->getCsvContent($this->getContent());
+    return $this;
+  }
+
+  public function getTxtData(){
+    $this->content = $this->getContent();
+    return $this;
+  }
+
+  public function getYamlData(){
+    $this->content = Yaml::decode($this->getContent());
+    return $this;
+  }
+
+  public function getJsonData(){
+    $this->content = Json::decode($this->getContent());
     return $this;
   }
 

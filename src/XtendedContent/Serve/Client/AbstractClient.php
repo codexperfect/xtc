@@ -123,6 +123,7 @@ class AbstractClient implements ClientInterface
    * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
    */
   protected function buildClient() : ClientInterface {
+    $this->setOptions();
     return $this;
   }
 
