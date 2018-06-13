@@ -102,6 +102,31 @@ class DummyClient extends AbstractClient
   }
 
   /**
+   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   */
+  public function setOptions()  : ClientInterface {
+    $this->setClientProfile();
+    $options['path'] = $this->buildPath();
+    $this->options = $options;
+    return $this;
+  }
+
+  private function buildPath(){
+    if($this->getInfo('abs_path')){
+      return $this->getInfo('path');
+    }
+    else{
+      $module_handler = \Drupal::service('module_handler');
+      $pwd = $module_handler->getModule('xtcfile')->getPath();
+      return $pwd.'/'.$this->getInfo('path');
+    }
+  }
+
+  private function getInfo($item){
+    return $this->clientProfile[$item];
+  }
+
+  /**
    * w3wfr: Method stolen from https://github.com/parsecsv/parsecsv-for-php
    *
    * Parse CSV strings to arrays. If you need BOM detection or character
@@ -258,33 +283,5 @@ class DummyClient extends AbstractClient
     $content['rows'] = $rows;
 
     return $content;
-  }
-
-
-
-
-  /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
-   */
-  public function setOptions()  : ClientInterface {
-    $this->setClientProfile();
-    $options['path'] = $this->buildPath();
-    $this->options = $options;
-    return $this;
-  }
-
-  private function buildPath(){
-    if($this->getInfo('abs_path')){
-      return $this->getInfo('path');
-    }
-    else{
-      $module_handler = \Drupal::service('module_handler');
-      $pwd = $module_handler->getModule('xtcfile')->getPath();
-      return $pwd.'/'.$this->getInfo('path');
-    }
-  }
-
-  private function getInfo($item){
-    return $this->clientProfile[$item];
   }
 }

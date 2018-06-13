@@ -77,6 +77,14 @@ class AbstractClient implements ClientInterface
   /**
    * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
    */
+  protected function buildClient() : ClientInterface {
+    $this->setOptions();
+    return $this;
+  }
+
+  /**
+   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   */
   public function setClientProfile() : ClientInterface
   {
     $this->clientProfile = $this->xtcConfig['xtc']['serve_client'][$this->profile];
@@ -116,14 +124,6 @@ class AbstractClient implements ClientInterface
   public function setXtcConfig($config) : ClientInterface {
     $this->xtcConfig = $config;
     $this->buildClient();
-    return $this;
-  }
-
-  /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
-   */
-  protected function buildClient() : ClientInterface {
-    $this->setOptions();
     return $this;
   }
 

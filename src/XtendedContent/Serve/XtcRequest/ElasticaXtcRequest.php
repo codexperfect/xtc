@@ -9,7 +9,7 @@
 namespace Drupal\xtc\XtendedContent\Serve\XtcRequest;
 
 
-class ElasticaRequest extends AbstractXtcRequest
+class ElasticaXtcRequest extends AbstractXtcRequest
 {
 
 }

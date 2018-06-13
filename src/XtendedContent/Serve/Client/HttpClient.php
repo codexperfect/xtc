@@ -31,6 +31,17 @@ class HttpClient extends AbstractClient
   protected $client;
 
   /**
+   * @param string $method
+   * @param string $param
+   *
+   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   */
+  public function init($method, $param = '') : ClientInterface {
+    $this->setUri($method, $param);
+    return $this;
+  }
+
+  /**
    * @return string
    */
   public function get() : string {
@@ -39,13 +50,17 @@ class HttpClient extends AbstractClient
   }
 
   /**
-   * @param string $method
-   * @param string $param
-   *
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return $this|\Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
    */
-  public function init($method, $param = '') : ClientInterface {
-    $this->setUri($method, $param);
+  public function setOptions() : ClientInterface
+  {
+    $this->setClientProfile();
+    $this->setUrl();
+
+    $options = $this->clientProfile['options'];
+    $options['base_uri'] = $this->getUrl();
+    $options['headers']['auth_token'] = $this->getToken();
+    $this->options = $options;
     return $this;
   }
 
@@ -73,21 +88,6 @@ class HttpClient extends AbstractClient
     $xtctoken = Config::getConfigs('serve', 'xtctoken');
     $this->xtcConfig = array_merge_recursive($client, $xtctoken);
     $this->buildClient();
-    return $this;
-  }
-
-  /**
-   * @return $this|\Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
-   */
-  public function setOptions() : ClientInterface
-  {
-    $this->setClientProfile();
-    $this->setUrl();
-
-    $options = $this->clientProfile['options'];
-    $options['base_uri'] = $this->getUrl();
-    $options['headers']['auth_token'] = $this->getToken();
-    $this->options = $options;
     return $this;
   }
 
