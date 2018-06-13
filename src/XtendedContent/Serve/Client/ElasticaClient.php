@@ -13,13 +13,29 @@ class ElasticaClient extends AbstractClient
 {
 
   /**
+   * @var string
+   */
+  private $method;
+
+  /**
+   * @var string
+   */
+  private $param;
+
+  /**
+   * @var string
+   */
+  private $content;
+
+  /**
    * @param string $method
    * @param string $param
    *
    * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
    */
   public function init($method, $param = '') : ClientInterface {
-//    $this->setUri($method, $param);
+    $this->method = $method;
+    $this->param = $param;
     return $this;
   }
 
@@ -27,8 +43,21 @@ class ElasticaClient extends AbstractClient
    * @return string
    */
   public function get() : string {
-    $res = $this->client->get($this->uri);
-    return $res->getBody()->getContents();
+    if(method_exists($this, $this->method)){
+      $getMethod = $this->method;
+      $this->${"getMethod"}();
+    }
+    return Json::encode($this->content);
+  }
+
+  /**
+   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   */
+  protected function buildClient() : ClientInterface {
+    $this->setOptions();
+    $this->client = New
+    ($this->options);
+    return $this;
   }
 
 }
