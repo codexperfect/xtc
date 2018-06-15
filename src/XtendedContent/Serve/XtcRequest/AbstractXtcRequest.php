@@ -10,9 +10,6 @@ namespace Drupal\xtc\XtendedContent\Serve\XtcRequest;
 
 
 use Drupal\xtc\XtendedContent\API\Config;
-use Drupal\xtc\XtendedContent\Serve\Client\DummyClient;
-use Drupal\xtc\XtendedContent\Serve\Client\ElasticaClient;
-use Drupal\xtc\XtendedContent\Serve\Client\HttpClient;
 use Drupal\xtc\XtendedContent\Serve\Client\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 
