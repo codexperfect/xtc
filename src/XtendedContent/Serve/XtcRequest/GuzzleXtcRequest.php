@@ -20,5 +20,4 @@ class GuzzleXtcRequest extends AbstractXtcRequest
     $this->client->setXtcConfigFromYaml();
     return $this;
   }
-
 }

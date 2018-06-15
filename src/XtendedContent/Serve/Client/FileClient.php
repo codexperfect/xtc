@@ -13,7 +13,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\xtc\XtendedContent\API\Config;
 
-class DummyClient extends AbstractClient
+class FileClient extends AbstractClient
 {
 
   /**

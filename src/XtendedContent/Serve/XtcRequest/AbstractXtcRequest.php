@@ -48,20 +48,6 @@ class AbstractXtcRequest implements XtcRequestInterface
   }
 
   protected function buildClient(){
-    if(isset($this->profile)){
-      switch ($this->getType()){
-        case 'dummy':
-          $this->client = new DummyClient($this->profile);
-          break;
-        case 'elasticsearch':
-          $this->client = new ElasticaClient($this->profile);
-          break;
-        case 'guzzle':
-        default:
-          $this->client = new HttpClient($this->profile);
-      }
-    }
-    $this->client->setXtcConfigFromYaml();
     return $this;
   }
 
