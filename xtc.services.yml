@@ -1,3 +1,0 @@
-services:
-  xtc.guzzle:
-    class: Drupal\xtc\XtendedContent\Serve\XtcRequest\GuzzleXtcRequest
