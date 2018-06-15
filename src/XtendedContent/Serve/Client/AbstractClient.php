@@ -135,4 +135,9 @@ class AbstractClient implements ClientInterface
   protected function getEnvironment($environment) : array {
     return $this->clientProfile['path'][$environment];
   }
+
+  protected function getInfo($item) : string {
+    return (isset($this->clientProfile[$item])) ? $this->clientProfile[$item] : '';
+  }
+
 }
