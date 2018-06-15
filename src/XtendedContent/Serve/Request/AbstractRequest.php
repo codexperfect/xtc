@@ -14,7 +14,6 @@ use Drupal\xtc\XtendedContent\Serve\Query\QueryInterface;
 use Drupal\xtc\XtendedContent\Serve\Response\JsonResponse;
 use Drupal\xtc\XtendedContent\Serve\Response\Response;
 use Drupal\xtc\XtendedContent\Serve\Response\ResponseInterface;
-use Drupal\xtc\XtendedContent\Serve\XtcRequest\XtcRequest;
 use Drupal\xtc\XtendedContent\Serve\XtcRequest\XtcRequestInterface;
 
 /**
