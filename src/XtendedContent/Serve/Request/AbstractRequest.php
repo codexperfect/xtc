@@ -52,7 +52,8 @@ class AbstractRequest implements RequestInterface
   {
     $this->setConfig()
       ->setQuery();
-    $xtcRequest = New XtcRequest($this->query->getProfile());
+    $xtcRequest = \Drupal::service('xtc.'.$this->query->getType());
+    $xtcRequest->setProfile($this->query->getProfile());
     $xtcRequest->setConfigFromYaml();
     $this->setWsrequest($xtcRequest)
       ->initResponse()

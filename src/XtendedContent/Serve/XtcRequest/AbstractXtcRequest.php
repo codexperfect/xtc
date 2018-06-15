@@ -31,9 +31,9 @@ class AbstractXtcRequest implements XtcRequestInterface
   /**
    * @var ClientInterface
    */
-  private $client;
+  protected $client;
 
-  private $profile;
+  protected $profile;
 
   private $webservice;
 
@@ -42,7 +42,12 @@ class AbstractXtcRequest implements XtcRequestInterface
     $this->profile = $profile;
   }
 
-  private function buildClient(){
+  public function setProfile($profile = '')
+  {
+    $this->profile = $profile;
+  }
+
+  protected function buildClient(){
     if(isset($this->profile)){
       switch ($this->getType()){
         case 'dummy':
@@ -53,7 +58,7 @@ class AbstractXtcRequest implements XtcRequestInterface
           break;
         case 'guzzle':
         default:
-        $this->client = new HttpClient($this->profile);
+          $this->client = new HttpClient($this->profile);
       }
     }
     $this->client->setXtcConfigFromYaml();
@@ -137,7 +142,7 @@ class AbstractXtcRequest implements XtcRequestInterface
     $this->webservice = array_merge_recursive(
       $this->config['xtc']['serve_client'][$this->profile],
       $this->config['xtc']['serve_xtcrequest'][$this->profile]
-      );
+    );
     return $this;
   }
 
