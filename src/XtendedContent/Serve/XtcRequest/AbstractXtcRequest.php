@@ -103,7 +103,7 @@ class AbstractXtcRequest implements XtcRequestInterface
   {
     $this->config = $config;
     $this->setWebservice();
-    $this->buildClient();
+    $this->buildClientFromConfig($config);
     return $this;
   }
 
