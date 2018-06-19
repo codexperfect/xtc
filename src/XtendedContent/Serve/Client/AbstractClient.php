@@ -51,7 +51,7 @@ class AbstractClient implements ClientInterface
    * @param string $method
    * @param string $param
    *
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return ClientInterface
    */
   public function init($method, $param = '') : ClientInterface{
     return $this;
@@ -65,7 +65,7 @@ class AbstractClient implements ClientInterface
   }
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return ClientInterface
    */
   public function setOptions()  : ClientInterface {
     $this->setClientProfile();
@@ -75,7 +75,7 @@ class AbstractClient implements ClientInterface
   }
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return ClientInterface
    */
   public function setOptionsFromConfig($config)  : ClientInterface {
     $this->setClientProfile();
@@ -85,7 +85,7 @@ class AbstractClient implements ClientInterface
   }
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return ClientInterface
    */
   protected function buildClient() : ClientInterface {
     $this->setOptions();
@@ -93,7 +93,7 @@ class AbstractClient implements ClientInterface
   }
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return ClientInterface
    */
   protected function buildClientFromConfig($config) : ClientInterface {
     $this->setOptionsFromConfig($config);
@@ -101,18 +101,9 @@ class AbstractClient implements ClientInterface
   }
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return ClientInterface
    */
   public function setClientProfile() : ClientInterface
-  {
-    $this->clientProfile = $this->xtcConfig['xtc']['serve_client'][$this->profile];
-    return $this;
-  }
-
-  /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
-   */
-  public function setClientProfileFromConfig($config) : ClientInterface
   {
     $this->clientProfile = $this->xtcConfig['xtc']['serve_client'][$this->profile];
     return $this;
@@ -163,7 +154,7 @@ class AbstractClient implements ClientInterface
     return $this->clientProfile['path'][$environment];
   }
 
-  protected function getInfo($item) : string {
+  protected function getInfo($item) {
     return (isset($this->clientProfile[$item])) ? $this->clientProfile[$item] : '';
   }
 

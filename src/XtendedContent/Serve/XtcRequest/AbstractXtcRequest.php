@@ -21,9 +21,9 @@ class AbstractXtcRequest implements XtcRequestInterface
    */
   protected $options = [];
 
-  private $config;
+  protected $config;
 
-  private $data;
+  protected $data;
 
   /**
    * @var ClientInterface
@@ -32,7 +32,7 @@ class AbstractXtcRequest implements XtcRequestInterface
 
   protected $profile;
 
-  private $webservice;
+  protected $webservice;
 
   public function __construct($profile = '')
   {
@@ -45,6 +45,10 @@ class AbstractXtcRequest implements XtcRequestInterface
   }
 
   protected function buildClient(){
+    return $this;
+  }
+
+  protected function buildClientFromConfig($config){
     return $this;
   }
 
@@ -120,7 +124,7 @@ class AbstractXtcRequest implements XtcRequestInterface
   /**
    * @return $this
    */
-  private function setWebservice()
+  protected function setWebservice()
   {
     $this->webservice = array_merge_recursive(
       $this->config['xtc']['serve_client'][$this->profile],
