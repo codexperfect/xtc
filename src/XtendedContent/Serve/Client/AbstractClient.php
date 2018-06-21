@@ -77,26 +77,8 @@ class AbstractClient implements ClientInterface
   /**
    * @return ClientInterface
    */
-  public function setOptionsFromConfig($config)  : ClientInterface {
-    $this->setClientProfile();
-    $options = [];
-    $this->options = $options;
-    return $this;
-  }
-
-  /**
-   * @return ClientInterface
-   */
   protected function buildClient() : ClientInterface {
     $this->setOptions();
-    return $this;
-  }
-
-  /**
-   * @return ClientInterface
-   */
-  protected function buildClientFromConfig($config) : ClientInterface {
-    $this->setOptionsFromConfig($config);
     return $this;
   }
 
@@ -125,24 +107,22 @@ class AbstractClient implements ClientInterface
   }
 
   /**
+   * @param array $config
+   *
    * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
    */
-  public function setXtcConfigFromYaml() : ClientInterface {
-    $client = Config::getConfigs('serve', 'client');
-    $this->xtcConfig = array_merge_recursive($client);
+  public function setXtcConfig(array $config = []) : ClientInterface {
+    $this->xtcConfig = (!empty($config)) ? $config : $this->getXtcConfigFromYaml();
     $this->buildClient();
     return $this;
   }
 
   /**
-   * @param array $config
-   *
    * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
    */
-  public function setXtcConfig($config) : ClientInterface {
-    $this->xtcConfig = $config;
-    $this->buildClientFromConfig($config);
-    return $this;
+  public function getXtcConfigFromYaml() : ClientInterface {
+    $client = Config::getConfigs('serve', 'client');
+    return array_merge_recursive($client);
   }
 
   /**

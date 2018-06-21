@@ -18,16 +18,11 @@ interface ClientInterface
   public function get() : string;
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
-   */
-  public function setXtcConfigFromYaml() : ClientInterface;
-
-  /**
    * @param array $config
    *
    * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
    */
-  public function setXtcConfig($config) : ClientInterface;
+  public function setXtcConfig(array $config = []) : ClientInterface;
 
   /**
    * @param string $method

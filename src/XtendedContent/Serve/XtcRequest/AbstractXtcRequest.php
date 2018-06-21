@@ -48,10 +48,6 @@ class AbstractXtcRequest implements XtcRequestInterface
     return $this;
   }
 
-  protected function buildClientFromConfig($config){
-    return $this;
-  }
-
   /**
    * @return ClientInterface
    */
@@ -103,22 +99,19 @@ class AbstractXtcRequest implements XtcRequestInterface
     return $this->config;
   }
 
-  public function setConfig(array $config)
+  public function setConfig(array $config = [])
   {
-    $this->config = $config;
-    $this->setWebservice();
-    $this->buildClientFromConfig($config);
-    return $this;
-  }
-
-  public function setConfigFromYaml()
-  {
-    $client = Config::getConfigs('serve', 'client');
-    $xtcrequest = Config::getConfigs('serve', 'xtcrequest');
-    $this->config = array_merge_recursive($client, $xtcrequest);
+    $this->config = (!empty($config)) ? $config : $this->getConfigFromYaml();
     $this->setWebservice();
     $this->buildClient();
     return $this;
+  }
+
+  public function getConfigFromYaml()
+  {
+    $client = Config::getConfigs('serve', 'client');
+    $xtcrequest = Config::getConfigs('serve', 'xtcrequest');
+    return array_merge_recursive($client, $xtcrequest);
   }
 
   /**
