@@ -101,7 +101,7 @@ class AbstractXtcRequest implements XtcRequestInterface
 
   public function setConfig(array $config = [])
   {
-    $this->config = (!empty($config)) ? $config : $this->getConfigFromYaml();
+    $this->config = ([] == $config) ? $this->getConfigFromYaml() : $config;
     $this->setWebservice();
     $this->buildClient();
     return $this;
