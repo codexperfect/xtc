@@ -19,7 +19,5 @@ interface XtcRequestInterface
 
   public function setConfig(array $config);
 
-  public function setConfigFromYaml();
-
   public function getData($format = 'json');
 }

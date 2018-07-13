@@ -10,9 +10,6 @@ namespace Drupal\xtc\XtendedContent\Serve\XtcRequest;
 
 
 use Drupal\xtc\XtendedContent\API\Config;
-use Drupal\xtc\XtendedContent\Serve\Client\DummyClient;
-use Drupal\xtc\XtendedContent\Serve\Client\ESClient;
-use Drupal\xtc\XtendedContent\Serve\Client\HttpClient;
 use Drupal\xtc\XtendedContent\Serve\Client\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 
@@ -24,39 +21,30 @@ class AbstractXtcRequest implements XtcRequestInterface
    */
   protected $options = [];
 
-  private $config;
+  protected $config;
 
-  private $data;
+  protected $data;
 
   /**
    * @var ClientInterface
    */
-  private $client;
+  protected $client;
 
-  private $profile;
+  protected $profile;
 
-  private $webservice;
+  protected $webservice;
 
   public function __construct($profile = '')
   {
     $this->profile = $profile;
   }
 
-  private function buildClient(){
-    if(isset($this->profile)){
-      switch ($this->getType()){
-        case 'dummy':
-          $this->client = new DummyClient($this->profile);
-          break;
-        case 'elasticsearch':
-          $this->client = new ESClient($this->profile);
-          break;
-        case 'guzzle':
-        default:
-        $this->client = new HttpClient($this->profile);
-      }
-    }
-    $this->client->setXtcConfigFromYaml();
+  public function setProfile($profile = '')
+  {
+    $this->profile = $profile;
+  }
+
+  protected function buildClient(){
     return $this;
   }
 
@@ -111,33 +99,30 @@ class AbstractXtcRequest implements XtcRequestInterface
     return $this->config;
   }
 
-  public function setConfig(array $config)
+  public function setConfig(array $config = [])
   {
-    $this->config = $config;
+    $this->config = (!empty($config)) ? $config : $this->getConfigFromYaml();
     $this->setWebservice();
     $this->buildClient();
     return $this;
   }
 
-  public function setConfigFromYaml()
+  public function getConfigFromYaml()
   {
     $client = Config::getConfigs('serve', 'client');
     $xtcrequest = Config::getConfigs('serve', 'xtcrequest');
-    $this->config = array_merge_recursive($client, $xtcrequest);
-    $this->setWebservice();
-    $this->buildClient();
-    return $this;
+    return array_merge_recursive($client, $xtcrequest);
   }
 
   /**
    * @return $this
    */
-  private function setWebservice()
+  protected function setWebservice()
   {
     $this->webservice = array_merge_recursive(
       $this->config['xtc']['serve_client'][$this->profile],
       $this->config['xtc']['serve_xtcrequest'][$this->profile]
-      );
+    );
     return $this;
   }
 

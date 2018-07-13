@@ -51,7 +51,7 @@ class AbstractClient implements ClientInterface
    * @param string $method
    * @param string $param
    *
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return ClientInterface
    */
   public function init($method, $param = '') : ClientInterface{
     return $this;
@@ -65,7 +65,7 @@ class AbstractClient implements ClientInterface
   }
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return ClientInterface
    */
   public function setOptions()  : ClientInterface {
     $this->setClientProfile();
@@ -75,7 +75,15 @@ class AbstractClient implements ClientInterface
   }
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
+   * @return ClientInterface
+   */
+  protected function buildClient() : ClientInterface {
+    $this->setOptions();
+    return $this;
+  }
+
+  /**
+   * @return ClientInterface
    */
   public function setClientProfile() : ClientInterface
   {
@@ -99,22 +107,12 @@ class AbstractClient implements ClientInterface
   }
 
   /**
-   * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
-   */
-  public function setXtcConfigFromYaml() : ClientInterface {
-    $client = Config::getConfigs('serve', 'client');
-    $this->xtcConfig = array_merge_recursive($client);
-    $this->buildClient();
-    return $this;
-  }
-
-  /**
    * @param array $config
    *
    * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
    */
-  public function setXtcConfig($config) : ClientInterface {
-    $this->xtcConfig = $config;
+  public function setXtcConfig(array $config = []) : ClientInterface {
+    $this->xtcConfig = (!empty($config)) ? $config : $this->getXtcConfigFromYaml();
     $this->buildClient();
     return $this;
   }
@@ -122,8 +120,9 @@ class AbstractClient implements ClientInterface
   /**
    * @return \Drupal\xtc\XtendedContent\Serve\Client\ClientInterface
    */
-  protected function buildClient() : ClientInterface {
-    return $this;
+  public function getXtcConfigFromYaml() : ClientInterface {
+    $client = Config::getConfigs('serve', 'client');
+    return array_merge_recursive($client);
   }
 
   /**
@@ -134,4 +133,9 @@ class AbstractClient implements ClientInterface
   protected function getEnvironment($environment) : array {
     return $this->clientProfile['path'][$environment];
   }
+
+  protected function getInfo($item) {
+    return (isset($this->clientProfile[$item])) ? $this->clientProfile[$item] : '';
+  }
+
 }
