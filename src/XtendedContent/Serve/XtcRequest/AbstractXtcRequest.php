@@ -82,7 +82,7 @@ class AbstractXtcRequest implements XtcRequestInterface
       }
     }
     else{
-      return (t('Request error: The "'.$method.'" method is not allowed.'));
+      return 'Request error: The "'.$method.'" method is not allowed.';
     }
   }
 
