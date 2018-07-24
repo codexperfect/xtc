@@ -75,15 +75,15 @@ class AbstractXtcRequest implements XtcRequestInterface
       try {
         $this->client->init($method, $param);
         $content = $this->client->get();
-        $this->setData($content);
-        return $this;
       } catch (RequestException $e) {
-        return ('Request error: ' . $e->getMessage());
+        $content = '';
       }
     }
     else{
-      return 'Request error: The "'.$method.'" method is not allowed.';
+      $content = 'Request error: The "'.$method.'" method is not allowed.';
     }
+    $this->setData($content);
+    return $this;
   }
 
   public function isAllowed($method)
