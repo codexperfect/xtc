@@ -88,7 +88,8 @@ class AbstractXtcRequest implements XtcRequestInterface
 
   public function isAllowed($method)
   {
-    return in_array($method, $this->webservice['allowed']);
+//    return in_array($method, $this->webservice['allowed']);
+    return TRUE;
   }
 
   /**
@@ -119,9 +120,10 @@ class AbstractXtcRequest implements XtcRequestInterface
    */
   protected function setWebservice()
   {
+    $xtcRequestSettings = (!empty($this->config['xtc']['serve_xtcrequest'][$this->profile])) ? $this->config['xtc']['serve_xtcrequest'][$this->profile] : [];
     $this->webservice = array_merge_recursive(
       $this->config['xtc']['serve_client'][$this->profile],
-      $this->config['xtc']['serve_xtcrequest'][$this->profile]
+      $xtcRequestSettings
     );
     return $this;
   }
