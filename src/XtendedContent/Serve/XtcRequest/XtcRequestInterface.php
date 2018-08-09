@@ -13,6 +13,12 @@ interface XtcRequestInterface
 {
   public function __construct($profile = '');
 
+  /**
+   * @param $method
+   * @param string $param
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|mixed|string
+   */
   public function get($method, $param = '');
 
   public function getConfig();
@@ -20,4 +26,7 @@ interface XtcRequestInterface
   public function setConfig(array $config);
 
   public function getData($format = 'json');
+
+  public function getWebservice();
+
 }

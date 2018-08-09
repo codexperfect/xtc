@@ -13,7 +13,7 @@ use Drupal\xtc\XtendedContent\API\Config;
 use Drupal\xtc\XtendedContent\Serve\Client\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 
-class AbstractXtcRequest implements XtcRequestInterface
+abstract class AbstractXtcRequest implements XtcRequestInterface
 {
 
   /**
@@ -44,9 +44,7 @@ class AbstractXtcRequest implements XtcRequestInterface
     $this->profile = $profile;
   }
 
-  protected function buildClient(){
-    return $this;
-  }
+  abstract protected function buildClient();
 
   /**
    * @return ClientInterface
@@ -71,16 +69,11 @@ class AbstractXtcRequest implements XtcRequestInterface
    */
   public function get($method, $param = '')
   {
-    if ($this->isAllowed($method)){
-      try {
-        $this->client->init($method, $param);
-        $content = $this->client->get();
-      } catch (RequestException $e) {
-        $content = '';
-      }
-    }
-    else{
-      $content = 'Request error: The "'.$method.'" method is not allowed.';
+    try {
+      $this->client->init($method, $param);
+      $content = $this->client->get();
+    } catch (RequestException $e) {
+      $content = '';
     }
     $this->setData($content);
     return $this;
@@ -120,12 +113,15 @@ class AbstractXtcRequest implements XtcRequestInterface
    */
   protected function setWebservice()
   {
-    $xtcRequestSettings = (!empty($this->config['xtc']['serve_xtcrequest'][$this->profile])) ? $this->config['xtc']['serve_xtcrequest'][$this->profile] : [];
-    $this->webservice = array_merge_recursive(
-      $this->config['xtc']['serve_client'][$this->profile],
-      $xtcRequestSettings
-    );
+    $this->webservice = $this->config['xtc']['serve_client'][$this->profile];
     return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getWebservice() {
+    return $this->webservice;
   }
 
   /**
