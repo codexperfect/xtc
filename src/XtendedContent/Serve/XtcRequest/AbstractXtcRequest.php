@@ -65,7 +65,7 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
    * @param $method
    * @param string $param
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|mixed|string
+   * @return $this
    */
   public function get($method, $param = '')
   {
