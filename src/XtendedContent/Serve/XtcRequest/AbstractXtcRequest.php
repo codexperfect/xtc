@@ -78,13 +78,7 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
     $this->setData($content);
     return $this;
   }
-
-  public function isAllowed($method)
-  {
-//    return in_array($method, $this->webservice['allowed']);
-    return TRUE;
-  }
-
+  
   /**
    * @return mixed
    */
@@ -103,9 +97,7 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
 
   public function getConfigFromYaml()
   {
-    $client = Config::getConfigs('serve', 'client');
-    $xtcrequest = Config::getConfigs('serve', 'xtcrequest');
-    return array_merge_recursive($client, $xtcrequest);
+    return Config::getConfigs('serve', 'client');
   }
 
   /**
