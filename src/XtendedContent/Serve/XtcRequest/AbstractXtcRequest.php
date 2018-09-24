@@ -9,6 +9,7 @@
 namespace Drupal\xtc\XtendedContent\Serve\XtcRequest;
 
 
+use Drupal\Component\Serialization\Json;
 use Drupal\xtc\XtendedContent\API\Config;
 use Drupal\xtc\XtendedContent\Serve\Client\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -126,10 +127,10 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
     }
     switch ($format){
       case 'object':
-        return json_decode($this->data);
+        return Json::decode($this->data);
         break;
       case 'array':
-        return (array) json_decode($this->data);
+        return (array) Json::decode($this->data);
         break;
       default:
         return $this->data;
