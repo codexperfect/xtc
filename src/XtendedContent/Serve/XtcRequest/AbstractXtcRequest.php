@@ -10,6 +10,7 @@ namespace Drupal\xtc\XtendedContent\Serve\XtcRequest;
 
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Site\Settings;
 use Drupal\xtc\XtendedContent\API\Config;
 use Drupal\xtc\XtendedContent\Serve\Client\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -98,7 +99,14 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
 
   public function getConfigFromYaml()
   {
-    return Config::getConfigs('serve', 'client');
+    $params =Config::getConfigs('serve', 'client');
+
+    // Enable config override from settings.local.php
+    $settings = Settings::get('csoec.serve_client');
+    if(!empty($settings)){
+      return array_replace_recursive($params, $settings);
+    }
+    return $params;
   }
 
   /**
