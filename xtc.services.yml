@@ -1,0 +1,15 @@
+services:
+  plugin.manager.xtc_handler:
+    class: Drupal\xtc\XtcHandlerPluginManager
+    parent: default_plugin_manager
+
+  plugin.manager.xtc_profile:
+    class: Drupal\xtc\XtcProfilePluginManager
+    arguments: ['@module_handler', '@cache.discovery']
+
+  plugin.manager.xtc_server:
+    class: Drupal\xtc\XtcServerPluginManager
+    arguments: ['@module_handler', '@cache.discovery']
+  plugin.manager.xtc_request:
+    class: Drupal\xtc\XtcRequestPluginManager
+    arguments: ['@module_handler', '@cache.discovery']
