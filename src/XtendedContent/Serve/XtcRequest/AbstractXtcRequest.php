@@ -99,7 +99,7 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
 
   public function getConfigFromYaml()
   {
-    $params =Config::getConfigs('serve', 'client');
+    $params = Config::getConfigs('serve', 'client');
 
     // Enable config override from settings.local.php
     $settings = Settings::get('csoec.serve_client');
