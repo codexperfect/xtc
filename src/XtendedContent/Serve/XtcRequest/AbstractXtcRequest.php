@@ -154,4 +154,12 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
     $this->data = $data;
     return $this;
   }
+
+  /**
+   * @return string
+   */
+  public function getProfile(): string {
+    return $this->profile;
+  }
+
 }

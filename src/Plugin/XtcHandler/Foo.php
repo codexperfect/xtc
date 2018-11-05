@@ -2,7 +2,8 @@
 
 namespace Drupal\xtc\Plugin\XtcHandler;
 
-use Drupal\xtc\PluginManager\XtcServer\XtcHandler\XtcHandlerPluginBase;
+
+use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
 
 /**
  * Plugin implementation of the xtc_handler.
