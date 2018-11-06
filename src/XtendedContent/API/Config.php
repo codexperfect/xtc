@@ -8,6 +8,8 @@
 
 namespace Drupal\xtc\XtendedContent\API;
 
+use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
+
 class Config
 {
   public static function get($name){
@@ -22,6 +24,18 @@ class Config
     return [
       'xtc' => self::mergeConfig($work, $task),
     ];
+  }
+
+  public static function getXtcProfile($name){
+    $profile = \Drupal::service('plugin.manager.xtc_profile')
+      ->getDefinition($name)
+    ;
+    $xtcrequest = (New $profile['service']($name));
+    if($xtcrequest instanceof AbstractXtcRequest){
+      $xtcrequest->setConfigfromPlugins();
+    }
+
+    return $xtcrequest;
   }
 
   private static function mergeConfig($work, $task){
