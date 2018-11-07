@@ -36,7 +36,6 @@ abstract class AbstractClient implements ClientInterface
   /**
    * @var array
    */
-//  protected $clientProfile;
   public $clientProfile;
 
   /**
