@@ -34,6 +34,11 @@ abstract class XtcSearchFormBase extends FormBase implements XtcSearchFormInterf
   /**
    * @var array
    */
+  protected $navigation;
+
+  /**
+   * @var array
+   */
   protected $musts;
 
   protected $results;
@@ -110,6 +115,7 @@ abstract class XtcSearchFormBase extends FormBase implements XtcSearchFormInterf
 
     $this->getItems();
     $this->getPagination();
+    $this->getNavigation();
     $this->attachLibraries();
 
     return $this->form;
@@ -264,6 +270,86 @@ abstract class XtcSearchFormBase extends FormBase implements XtcSearchFormInterf
         'onclick' => 'window.location = "' . $this->resetLink() . '"; return false;',
       ],
       '#prefix' => '<div class="col-12 text-right">',
+      '#suffix' => '</div>',
+    ];
+  }
+
+  protected function getNavigation(){
+    $this->getNav();
+    $this->getTopNavigation();
+    $this->getBottomNavigation();
+  }
+
+  public function getNav(){
+    $this->navigation['current'] = '';
+    $this->navigation['next'] = 'next';
+    $this->navigation['previous'] = 'previous';
+  }
+
+  protected function getTopNavigation(){
+    $this->form['container']['elements']['topNav'] = [
+      '#type' => 'container',
+      '#prefix' => '<div class="row mx-0 mb-30"><div class="col-12 px-0 px-md-15">',
+      '#suffix' => '</div></div>',
+      '#weight' => '-10',
+    ];
+    $this->form['container']['elements']['topNav']['buttons'] = [
+      '#type' => 'container',
+      '#prefix' => '<div class="float-left">
+                  <span class="events-date">' . $this->navigation['current'] . '</span>
+                </div>
+                <div class="float-right">',
+      '#suffix' => '</div>',
+      '#weight' => '1',
+    ];
+    $this->form['container']['elements']['topNav']['buttons']['prev'] = [
+      '#type' => 'button',
+      '#value' => '',
+      '#weight' => '-1',
+      '#attributes' => [
+        'class' => ['prev-month'],
+        'onclick' => 'window.location = "' . $this->navigation['previous']['link'] . '"; return false;',
+      ],
+    ];
+    $this->form['container']['elements']['topNav']['buttons']['next'] = [
+      '#type' => 'button',
+      '#value' => '',
+      '#weight' => '-1',
+      '#attributes' => [
+        'class' => ['next-month'],
+        'onclick' => 'window.location = "' . $this->navigation['next']['link'] . '"; return false;',
+      ],
+    ];
+  }
+
+  protected function getBottomNavigation(){
+    $this->form['container']['elements']['bottomNav'] = [
+      '#type' => 'container',
+      '#prefix' => '<div class="row mx-0 mb-50">
+              <div class="col-12 bottom-months px-0 px-md-15">',
+      '#suffix' => '</div></div>',
+      '#weight' => '1',
+    ];
+    $this->form['container']['elements']['bottomNav']['prev'] = [
+      '#type' => 'button',
+      '#value' => $this->navigation['previous']['label'],
+      '#weight' => '-1',
+      '#attributes' => [
+        'class' => ['prev-month'],
+        'onclick' => 'window.location = "' . $this->navigation['previous']['link'] . '"; return false;',
+      ],
+      '#prefix' => '<div class="float-left">',
+      '#suffix' => '</div>',
+    ];
+    $this->form['container']['elements']['bottomNav']['next'] = [
+      '#type' => 'button',
+      '#value' => $this->navigation['next']['label'],
+      '#weight' => '-1',
+      '#attributes' => [
+        'class' => ['next-month'],
+        'onclick' => 'window.location = "' . $this->navigation['next']['link'] . '"; return false;',
+      ],
+      '#prefix' => '<div class="float-right">',
       '#suffix' => '</div>',
     ];
   }
