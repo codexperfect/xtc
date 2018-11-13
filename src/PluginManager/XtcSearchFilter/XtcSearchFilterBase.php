@@ -79,8 +79,13 @@ abstract class XtcSearchFilterBase extends PluginBase implements XtcSearchFilter
    */
   public function getAggregationBuckets($aggregation) {
     if(!empty($this->form) && $this->form instanceof XtcSearchFormInterface) {
-      return $this->form->getSearch()->getAggregation($aggregation)['buckets'];
+      $search = $this->form->getSearch();
+      if(!empty($search->getAggregation($aggregation))){
+        return $search->getAggregation($aggregation)['buckets'];
+      }
     }
+    return null;
+
   }
 
   /**
@@ -89,9 +94,11 @@ abstract class XtcSearchFilterBase extends PluginBase implements XtcSearchFilter
    * @return array $options
    */
   public function prepareOptionsFromBuckets($aggregation) {
-    $result = $this->getAggregationBuckets($aggregation);
-    foreach ($result as $option) {
-      $options[$option['key']] = $option['key'] . ' (' . $option['doc_count'] . ')';
+    $options = [];
+    if ($result = $this->getAggregationBuckets($aggregation)){
+      foreach ($result as $option) {
+        $options[$option['key']] = $option['key'] . ' (' . $option['doc_count'] . ')';
+      }
     }
     return $options;
   }
