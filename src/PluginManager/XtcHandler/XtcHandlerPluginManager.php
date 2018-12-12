@@ -28,7 +28,7 @@ class XtcHandlerPluginManager extends DefaultPluginManager {
       $namespaces,
       $module_handler,
       'Drupal\xtc\PluginManager\XtcHandler\XtcHandlerInterface',
-      'Drupal\xtc\PluginManager\XtcHandler\Annotation\XtcHandler'
+      'Drupal\xtc\Annotation\XtcHandler'
     );
     $this->alterInfo('xtc_handler_info');
     $this->setCacheBackend($cache_backend, 'xtc_handler_plugins');

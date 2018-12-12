@@ -8,23 +8,29 @@
 
 namespace Drupal\xtc\XtendedContent\API;
 
+
 use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
 
 class Config
 {
-  public static function get($name){
-    return \Drupal::config('xtc.'.$name.'.settings');
+
+  public static function getProfile($name){
+    $profile = \Drupal::service('plugin.manager.xtc_profile')
+      ->getDefinition($name)
+    ;
+    $handler = \Drupal::service('plugin.manager.xtc_handler')
+      ->createInstance($profile['type']);
+    $handler->setProfile($profile);
+    $handler->setOptions();
+    return $handler;
   }
 
-  public static function getData ($name){
-    return self::get($name)->getRawData();
-  }
 
-  public static function getConfigs($work, $task){
-    return [
-      'xtc' => self::mergeConfig($work, $task),
-    ];
-  }
+
+
+
+
+
 
   public static function getXtcProfile($name){
     $profile = \Drupal::service('plugin.manager.xtc_profile')
@@ -34,8 +40,21 @@ class Config
     if($xtcrequest instanceof AbstractXtcRequest){
       $xtcrequest->setConfigfromPlugins();
     }
-
     return $xtcrequest;
+  }
+
+  //  public static function get($name){
+  //    return \Drupal::config('xtc.'.$name.'.settings');
+  //  }
+
+  //  public static function getData ($name){
+  //    return self::get($name)->getRawData();
+  //  }
+
+  public static function getConfigs($work, $task){
+    return [
+      'xtc' => self::mergeConfig($work, $task),
+    ];
   }
 
   private static function mergeConfig($work, $task){
