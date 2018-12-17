@@ -50,6 +50,13 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return $this->content;
   }
 
+  public function setProfile(array $profile){
+    $this->profile = $profile;
+  }
+
+
+
+
   /**
    * @param string $method
    * @param string $param
@@ -66,10 +73,6 @@ abstract class XtcHandlerPluginBase extends PluginBase
     if(file_exists($this->options['path'])){
       $this->content = file_get_contents($this->options['path']);
     }
-  }
-
-  public function setProfile(array $profile){
-    $this->profile = $profile;
   }
 
 }

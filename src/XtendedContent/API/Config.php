@@ -9,22 +9,36 @@
 namespace Drupal\xtc\XtendedContent\API;
 
 
+use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
 use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
 
 class Config
 {
 
   public static function getProfile($name){
-    $profile = \Drupal::service('plugin.manager.xtc_profile')
-      ->getDefinition($name)
-    ;
-    $handler = \Drupal::service('plugin.manager.xtc_handler')
-      ->createInstance($profile['type']);
+    $profile = self::loadProfile($name);
+    $handler = self::createHandler($profile['type']);
     $handler->setProfile($profile);
     $handler->setOptions();
     return $handler;
   }
 
+  public static function transliterate($phrase){
+    $string = strtolower(\Drupal::transliteration()->transliterate($phrase));
+    return str_replace(' ', '_', $string);
+  }
+
+  protected static function loadProfile($name) : array {
+    return \Drupal::service('plugin.manager.xtc_profile')
+                  ->getDefinition($name)
+      ;
+  }
+
+  protected static function createHandler($name) : XtcHandlerPluginBase{
+    return \Drupal::service('plugin.manager.xtc_handler')
+                  ->createInstance($name)
+      ;
+  }
 
 
 
