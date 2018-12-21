@@ -21,7 +21,6 @@ class Config
     return self::createHandler($profile['type'])
                    ->setProfile($profile)
                    ->setOptions();
-//    return $handler;
   }
 
   public static function transliterate($phrase){
@@ -41,6 +40,11 @@ class Config
       ;
   }
 
+  /**
+   * @param $name
+   *
+   * @return array
+   */
   public static function getSearch($name){
     $xtcsearch = self::getXtcForm($name);
     return \Drupal::formBuilder()
@@ -70,15 +74,7 @@ class Config
     }
     return $xtcrequest;
   }
-
-  //  public static function get($name){
-  //    return \Drupal::config('xtc.'.$name.'.settings');
-  //  }
-
-  //  public static function getData ($name){
-  //    return self::get($name)->getRawData();
-  //  }
-
+  
   public static function getConfigs($work, $task){
     return [
       'xtc' => self::mergeConfig($work, $task),
