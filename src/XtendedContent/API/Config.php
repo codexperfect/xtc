@@ -74,7 +74,7 @@ class Config
     }
     return $xtcrequest;
   }
-  
+
   public static function getConfigs($work, $task){
     return [
       'xtc' => self::mergeConfig($work, $task),
