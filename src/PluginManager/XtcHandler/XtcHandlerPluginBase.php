@@ -50,8 +50,9 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return $this->content;
   }
 
-  public function setProfile(array $profile){
+  public function setProfile(array $profile) : XtcHandlerPluginBase{
     $this->profile = $profile;
+    return $this;
   }
 
 

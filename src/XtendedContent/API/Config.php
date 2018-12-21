@@ -11,16 +11,17 @@ namespace Drupal\xtc\XtendedContent\API;
 
 use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
 use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
+use Drupal\xtcsearch\PluginManager\XtcSearch\XtcSearchDefault;
 
 class Config
 {
 
   public static function getProfile($name){
     $profile = self::loadProfile($name);
-    $handler = self::createHandler($profile['type']);
-    $handler->setProfile($profile);
-    $handler->setOptions();
-    return $handler;
+    return self::createHandler($profile['type'])
+                   ->setProfile($profile)
+                   ->setOptions();
+//    return $handler;
   }
 
   public static function transliterate($phrase){
@@ -39,6 +40,19 @@ class Config
                   ->createInstance($name)
       ;
   }
+
+  public static function getSearch($name){
+    $xtcsearch = self::getXtcForm($name);
+    return \Drupal::formBuilder()
+           ->getForm($xtcsearch->getForm());
+  }
+
+  protected static function getXtcForm($name) : XtcSearchDefault{
+    return \Drupal::service('plugin.manager.xtcsearch')
+             ->createInstance($name);
+  }
+
+
 
 
 

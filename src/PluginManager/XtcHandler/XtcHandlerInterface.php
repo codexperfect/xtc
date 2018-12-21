@@ -16,8 +16,8 @@ interface XtcHandlerInterface
    */
   public function label();
 
-  public function setProfile(array $profile);
+  public function setProfile(array $profile) : XtcHandlerPluginBase;
 
-  public function setOptions();
+  public function setOptions() : XtcHandlerPluginBase;
 
 }
