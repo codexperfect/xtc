@@ -9,16 +9,19 @@
 namespace Drupal\xtc\XtendedContent\API;
 
 
+use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Plugin\PluginBase;
 use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
 use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
 use Drupal\xtcsearch\PluginManager\XtcSearch\XtcSearchDefault;
+use Drupal\xtcsearch\PluginManager\XtcSearchDisplay\XtcSearchDisplayDefault;
 
 class Config
 {
 
   public static function getProfile($name){
     $profile = self::loadProfile($name);
-    return self::createHandler($profile['type'])
+    return self::getHandler($profile['type'])
                    ->setProfile($profile)
                    ->setOptions();
   }
@@ -28,33 +31,72 @@ class Config
     return str_replace(' ', '_', $string);
   }
 
-  protected static function loadProfile($name) : array {
-    return \Drupal::service('plugin.manager.xtc_profile')
-                  ->getDefinition($name)
-      ;
-  }
-
-  protected static function createHandler($name) : XtcHandlerPluginBase{
-    return \Drupal::service('plugin.manager.xtc_handler')
-                  ->createInstance($name)
-      ;
-  }
-
-  /**
-   * @param $name
-   *
-   * @return array
-   */
   public static function getSearch($name){
     $xtcsearch = self::getXtcForm($name);
     return \Drupal::formBuilder()
-           ->getForm($xtcsearch->getForm());
+                  ->getForm($xtcsearch->getForm());
   }
 
-  protected static function getXtcForm($name) : XtcSearchDefault{
-    return \Drupal::service('plugin.manager.xtcsearch')
-             ->createInstance($name);
+
+  public static function loadProfile($name) : array {
+    return self::loadPlugin('plugin.manager.xtc_profile', $name);
   }
+
+  public static function getPrefix($type, $display, $name) : string{
+    $display = self::loadXtcDisplay($display);
+    return $display[$type][$name]['prefix'];
+  }
+  public static function getSuffix($type, $display, $name) : string{
+    $display = self::loadXtcDisplay($display);
+    return $display[$type][$name]['suffix'];
+  }
+
+  private static function loadPlugin($service, $name) : array{
+    return \Drupal::service($service)
+                  ->getDefinition($name);
+  }
+  private static function createPlugin($service, $name) : PluginBase{
+    return \Drupal::service($service)
+                  ->createInstance($name);
+  }
+
+  protected static function getHandler($name) : XtcHandlerPluginBase{
+    return self::createPlugin('plugin.manager.xtc_handler', $name);
+  }
+  public static function loadHandler($name) : array{
+    return self::loadPlugin('plugin.manager.xtc_handler', $name);
+  }
+
+  public static function getXtcForm($name) : XtcSearchDefault{
+    return self::createPlugin('plugin.manager.xtcsearch', $name);
+  }
+  public static function loadXtcForm($name) : array{
+    return self::loadPlugin('plugin.manager.xtcsearch', $name);
+  }
+
+  public static function getXtcDisplay($name) : XtcSearchDisplayDefault{
+    return self::createPlugin('plugin.manager.xtcsearch_display', $name);
+  }
+  public static function loadXtcDisplay($name) : array{
+    return self::loadPlugin('plugin.manager.xtcsearch_display', $name);
+  }
+
+
+  public static function getXtcSearchBlock($name){
+    $block_manager = \Drupal::service('plugin.manager.block');
+    $config = [];
+    $plugin_block = $block_manager->createInstance($name, $config);
+    if($plugin_block instanceof BlockBase){
+      $access_result = $plugin_block->access(\Drupal::currentUser());
+      if (is_object($access_result) && $access_result->isForbidden()
+          || is_bool($access_result) && !$access_result) {
+        // You might need to add some cache tags/contexts.
+        return [];
+      }
+      return $plugin_block->build();
+    }
+  }
+
 
 
 
