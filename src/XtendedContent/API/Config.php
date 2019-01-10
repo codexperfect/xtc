@@ -15,6 +15,7 @@ use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
 use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
 use Drupal\xtcsearch\PluginManager\XtcSearch\XtcSearchDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchDisplay\XtcSearchDisplayDefault;
+use Drupal\xtcsearch\SearchBuilder\XtcSearchBuilder;
 
 class Config
 {
@@ -31,12 +32,37 @@ class Config
     return str_replace(' ', '_', $string);
   }
 
+  /**
+   * @param $name
+   *
+   * @return array
+   */
   public static function getSearch($name){
     $xtcsearch = self::getXtcForm($name);
     return \Drupal::formBuilder()
                   ->getForm($xtcsearch->getForm());
   }
 
+  /**
+   * @param $name
+   *
+   * @return mixed
+   */
+  public static function getAutocomplete($name){
+    $xtcform = (Config::getXtcForm($name))->getForm();
+    $search = New XtcSearchBuilder($xtcform);
+    $search->triggerSearch();
+    $items = $search->getResultSet()->getSuggests()['completion_q'][0]['options'];
+
+    foreach($items as $key => $item){
+      $value = strtolower($item['text']);
+      $options[$key] = [
+        'value' => $value,
+        'label' => $value,
+      ];
+    }
+    return $options;
+  }
 
   public static function loadProfile($name) : array {
     return self::loadPlugin('plugin.manager.xtc_profile', $name);
