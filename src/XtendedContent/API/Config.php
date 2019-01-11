@@ -70,11 +70,11 @@ class Config
 
   public static function getPrefix($type, $display, $name) : string{
     $display = self::loadXtcDisplay($display);
-    return $display[$type][$name]['prefix'];
+    return $display[$type][$name]['prefix'] ?? '';
   }
   public static function getSuffix($type, $display, $name) : string{
     $display = self::loadXtcDisplay($display);
-    return $display[$type][$name]['suffix'];
+    return $display[$type][$name]['suffix'] ?? '';
   }
 
   private static function loadPlugin($service, $name) : array{
