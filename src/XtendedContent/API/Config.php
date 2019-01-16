@@ -15,6 +15,8 @@ use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
 use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
 use Drupal\xtcsearch\PluginManager\XtcSearch\XtcSearchDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchDisplay\XtcSearchDisplayDefault;
+use Drupal\xtcsearch\PluginManager\XtcSearchFilter\XtcSearchFilterDefault;
+use Drupal\xtcsearch\PluginManager\XtcSearchFilterType\XtcSearchFilterTypePluginBase;
 use Drupal\xtcsearch\SearchBuilder\XtcSearchBuilder;
 
 class Config
@@ -107,6 +109,25 @@ class Config
     return self::loadPlugin('plugin.manager.xtcsearch_display', $name);
   }
 
+  /**
+   * @param $name
+   *
+   * @return \Drupal\xtcsearch\PluginManager\XtcSearchFilterType\XtcSearchFilterTypePluginBase
+   */
+  public static function loadXtcFilter($name) : XtcSearchFilterTypePluginBase{
+    $filter = self::getXtcFilter($name);
+    return $filter->getFilterType();
+  }
+
+  /**
+   * @param $name
+   *
+   * @return \Drupal\xtcsearch\PluginManager\XtcSearchFilter\XtcSearchFilterDefault
+   */
+  public static function getXtcFilter($name) : XtcSearchFilterDefault{
+    $service = \Drupal::service('plugin.manager.xtcsearch_filter');
+    return  $service->createInstance($name);
+  }
 
   public static function getXtcSearchBlock($name){
     $block_manager = \Drupal::service('plugin.manager.block');
