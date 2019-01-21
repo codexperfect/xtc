@@ -34,6 +34,11 @@ abstract class XtcHandlerPluginBase extends PluginBase
   protected $profile = [];
 
   /**
+   * @var array
+   */
+  protected $options = [];
+
+  /**
    * {@inheritdoc}
    */
   public function label() {

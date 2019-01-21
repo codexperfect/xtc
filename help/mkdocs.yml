@@ -1,0 +1,15 @@
+site_name: Xtended Content Documentation
+
+repo_url: https://www.drupal.org/project/xtc
+site_description: 'Xtended Content provides access to external content from Drupal 8.'
+theme: readthedocs
+
+extra_javascript:
+  - js/fix_search.js
+
+markdown_extensions:
+  - toc:
+      permalink: True
+
+pages:
+  - Home: 'index.md'

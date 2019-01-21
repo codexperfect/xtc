@@ -22,16 +22,16 @@ use Drupal\xtcsearch\SearchBuilder\XtcSearchBuilder;
 class Config
 {
 
-  public static function getProfile($name){
-    $profile = self::loadProfile($name);
-    return self::getHandler($profile['type'])
-                   ->setProfile($profile)
-                   ->setOptions();
-  }
-
   public static function transliterate($phrase){
     $string = strtolower(\Drupal::transliteration()->transliterate($phrase));
     return str_replace(' ', '_', $string);
+  }
+
+  public static function getProfile($name){
+    $profile = self::loadProfile($name);
+    return self::getHandler($profile['type'])
+               ->setProfile($profile)
+               ->setOptions();
   }
 
   /**
@@ -66,6 +66,11 @@ class Config
     return $options;
   }
 
+  public static function getFile($name){
+    return self::getProfile($name)->get();
+  }
+
+
   public static function loadProfile($name) : array {
     return self::loadPlugin('plugin.manager.xtc_profile', $name);
   }
@@ -79,11 +84,11 @@ class Config
     return $display[$type][$name]['suffix'] ?? '';
   }
 
-  private static function loadPlugin($service, $name) : array{
+  protected static function loadPlugin($service, $name) : array{
     return \Drupal::service($service)
                   ->getDefinition($name);
   }
-  private static function createPlugin($service, $name) : PluginBase{
+  protected static function createPlugin($service, $name) {
     return \Drupal::service($service)
                   ->createInstance($name);
   }
