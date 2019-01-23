@@ -46,7 +46,6 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return (string) $this->pluginDefinition['label'];
   }
 
-
   public function get() {
     if(method_exists($this, $this->method)){
       $getMethod = $this->method;
@@ -59,9 +58,6 @@ abstract class XtcHandlerPluginBase extends PluginBase
     $this->profile = $profile;
     return $this;
   }
-
-
-
 
   /**
    * @param string $method

@@ -6,8 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Url;
-use \Drupal\xtc\XtendedContent\API\Config;
+use Drupal\xtc\XtendedContent\API\Config;
 
 /**
  * Implements hook_help().
@@ -15,22 +14,25 @@ use \Drupal\xtc\XtendedContent\API\Config;
 function xtc_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.xtc':
-      $variables = [
-        ':xtc' => Url::fromRoute('help.page', ['name' => 'xtc'])->toString(),
-      ];
-
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('The <a href=":xtc">WebService Content</a> module provide features to pull and push indexes between Drupal instance and ElasticeSearch remote servers.', $variables) . '</p>';
-      $output .= '<h3>' . t('Uses') . '</h3>';
-      $output .= '<p>' . t('[to be completed]') . '</p>';
-
-      $output .= Config::getFile('xtc_index_help');
-
-      return $output;
+      return Config::getHelp('xtc');
   }
-
 }
 
-
-
+/**
+ * Perform alterations on help page section plugin definitions.
+ *
+ * Sections for the page at /admin/help are provided by plugins. This hook
+ * allows modules to alter the plugin definitions.
+ *
+ * @param array $info
+ *   Array of plugin information exposed by hook page section plugins, altered
+ *   by reference.
+ *
+ * @see \Drupal\help\HelpSectionPluginInterface
+ * @see \Drupal\help\Annotation\HelpSection
+ * @see \Drupal\help\HelpSectionManager
+ */
+function xtc_help_section_info_alter(&$info) {
+  // Alter the header for the module overviews section.
+  $info['hook_help']['header'] = t('XTC Overviews of modules');
+}

@@ -10,9 +10,10 @@ namespace Drupal\xtc\XtendedContent\API;
 
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Plugin\PluginBase;
+use Drupal\Core\Link;
 use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
 use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
+use Drupal\xtcfile\Controller\XtcDocumentationController;
 use Drupal\xtcsearch\PluginManager\XtcSearch\XtcSearchDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchDisplay\XtcSearchDisplayDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchFilter\XtcSearchFilterDefault;
@@ -27,11 +28,107 @@ class Config
     return str_replace(' ', '_', $string);
   }
 
+  /**
+   * @param $name
+   *
+   * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
+   */
   public static function getProfile($name){
     $profile = self::loadProfile($name);
+    if(!empty($profile)){
+      return self::getHandler($profile['type'])
+                 ->setProfile($profile)
+                 ->setOptions()
+        ;
+    }
+    return null;
+  }
+
+  /**
+   * @param $name
+   *
+   * @return string
+   */
+  public static function getHelp($module){
+    $links =(New XtcDocumentationController())->getHelp();
+    return self::getHelpFile($module)
+           . $links;
+  }
+
+  /**
+   * @param $name
+   *
+   * @return string
+   */
+  public static function getHelpFile($module){
+    foreach(['help/help.md'] as $path){
+      $profile = [
+        'type' => 'markdown',
+        'abs_path' => false,
+        'module' => $module,
+        'path' => $path,
+      ];
+      $content = self::getFromProfile($profile);
+      if(!empty($content)){
+        return $content;
+      }
+    }
+    return '';
+  }
+
+  public static function getDocs($module){
+    $profile = [
+      'type' => 'mkdocs',
+      'abs_path' => false,
+      'module' => $module,
+      'path' => 'help/mkdocs.yml',
+    ];
+    $content = self::getFromProfile($profile);
+    if(!empty($content) && is_array($content)) {
+      return $content;
+    }
+    return "<h2>Documentation needs to be created.</h2>
+           <p>Documentation follows <b><a href='https://www.mkdocs.org/' target='_blank'>
+           mkdocs</a></b> standards.</p>
+        ";
+  }
+
+  /**
+   * @param $name
+   *
+   * @return string
+   */
+  public static function getDocsPage($module, $path){
+    $profile = [
+      'type' => 'mkdocs',
+      'abs_path' => false,
+      'module' => $module,
+      'path' => 'help/docs/' . $path,
+    ];
+    $content = self::getFromProfile($profile);
+    if(!empty($content)) {
+      return $content;
+    }
+    $link = Link::createFromRoute('Index', 'xtcfile.docs.docs',
+                                  ['module' => $module])->toString();
+    return "<h2>Page not found.</h2>
+           <p>Go back to the documentation index: $link.</p>
+        ";
+  }
+
+  public static function getHandlerFromProfile($profile){
     return self::getHandler($profile['type'])
                ->setProfile($profile)
                ->setOptions();
+    ;
+  }
+
+  public static function getFromProfile($profile){
+    return self::getHandler($profile['type'])
+               ->setProfile($profile)
+               ->setOptions()
+               ->get();
+    ;
   }
 
   /**
@@ -71,12 +168,16 @@ class Config
   }
 
   public static function getFile($name){
-    return self::getProfile($name)->get();
+    $profile = self::getProfile($name);
+    if(!empty($profile)){
+      return self::getProfile($name)->get();
+    }
   }
 
 
   public static function loadProfile($name) : array {
-    return self::loadPlugin('plugin.manager.xtc_profile', $name);
+    $profile = self::loadPlugin('plugin.manager.xtc_profile', $name);
+    return $profile ?? [];
   }
 
   public static function getPrefix($type, $display, $name) : string{
