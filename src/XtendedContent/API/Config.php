@@ -55,13 +55,17 @@ class Config
     $search = New XtcSearchBuilder($xtcform);
     $search->triggerSearch();
     $items = $search->getResultSet()->getSuggests()['completion_q'][0]['options'];
+    $textList = [];
 
     foreach($items as $key => $item){
       $value = strtolower($item['text']);
-      $options[$key] = [
-        'value' => $value,
-        'label' => $value,
-      ];
+      if(!in_array($value, $textList)) {
+        $options[$key] = [
+          'value' => $value,
+          'label' => $value,
+        ];
+        $textList[] = $value;
+      }
     }
     return $options;
   }
