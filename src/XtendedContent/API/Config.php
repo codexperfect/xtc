@@ -58,7 +58,7 @@ class Config
     $textList = [];
 
     foreach($items as $key => $item){
-      $value = strtolower($item['text']);
+      $value = strtolower(\Drupal::service('csoec_common.common_service')->replaceAccents($item['text']));
       if(!in_array($value, $textList)) {
         $options[$key] = [
           'value' => $value,
