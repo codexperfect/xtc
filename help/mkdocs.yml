@@ -16,3 +16,10 @@ pages:
   - Modules:
       - Xtended Content: 'modules/xtc.md'
       - Xtended Content File: 'modules/xtcfile.md'
+  - Plugins:
+      - Plugins by modules: 'plugins/plugins-by-modules.md'
+      - XTC plugins: 'plugins/xtc-plugins.md'
+      - XTC Elastica plugins: 'plugins/xtcelastica-plugins.md'
+      - XTC File plugins: 'plugins/xtcfile-plugins.md'
+      - XTC Guzzle plugins: 'plugins/xtcguzzle-plugins.md'
+      - XTC Search plugins: 'plugins/xtcsearch-plugins.md'
