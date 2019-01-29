@@ -18,39 +18,97 @@ use Drupal\xtcsearch\PluginManager\XtcSearch\XtcSearchDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchDisplay\XtcSearchDisplayDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchFilter\XtcSearchFilterDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchFilterType\XtcSearchFilterTypePluginBase;
+use Drupal\xtcsearch\PluginManager\XtcSearchPager\XtcSearchPagerPluginBase;
 use Drupal\xtcsearch\SearchBuilder\XtcSearchBuilder;
 use Drupal\xtcsearch\PluginManager\XtcSearchPager\XtcSearchPagerPluginBase;
 
 class Config
 {
 
+  /**
+   * PROFILE
+   */
+
+  public static function loadXtcHandler($name) : array{
+    return XtcHandler::load($name);
+  }
+
+  // Search
+  public static function getXtcForm($name) : XtcSearchDefault{
+    return XtcForm::get($name);
+  }
+  public static function loadXtcForm($name) : array{
+    return XtcForm::load($name);
+  }
+
+  // Server
+  public static function loadXtcServer($name) : array {
+    return XtcServer::load($name);
+  }
+
+  // Display
+  public static function getXtcDisplay($name) : XtcSearchDisplayDefault{
+    return XtcDisplay::get($name);
+  }
+  public static function loadXtcDisplay($name) : array{
+    return XtcDisplay::load($name);
+  }
+
+  // Pager
+  public static function getXtcPager($name) : XtcSearchPagerPluginBase{
+    return XtcPager::get($name);
+  }
+
+  // Filter
+  public static function getXtcFilter($name) : XtcSearchFilterDefault{
+    return XtcFilter::get($name);
+  }
+
+  // Mapping
+  public static function loadXtcMapping($name) : array{
+    return XtcMapping::load($name);
+  }
+
+  // Request
+  public static function loadXtcRequest($name) : array{
+    return XtcRequest::load($name);
+  }
+
+  // Filter Type
+  public static function getXtcFilterType($name) : XtcSearchFilterTypePluginBase{
+    return XtcFilterType::get($name);
+  }
+  public static function loadXtcFilterType($name) : array {
+    return XtcFilterType::load($name);
+  }
+
+  // Profile
+  public static function getProfile($name) : XtcHandlerPluginBase{
+    return XtcHandler::getHandlerFromProfile($name);
+  }
+  public static function loadXtcProfile($name) : array {
+    return XtcProfile::load($name);
+  }
+
+  // File
+  public static function getFile($name) {
+    return XtcHandler::getFile($name);
+  }
+
+
+
+
+
+
+
+
+
   public static function transliterate($phrase){
     $string = strtolower(\Drupal::transliteration()->transliterate($phrase));
     return str_replace(' ', '_', $string);
   }
 
-  /**
-   * @param $name
-   *
-   * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
-   */
-  public static function getProfile($name){
-    $profile = self::loadXtcProfile($name);
-    if(!empty($profile)){
-      return self::getXtcHandler($profile['type'])
-                 ->setProfile($profile)
-                 ->setOptions()
-        ;
-    }
-    return null;
-  }
 
-  public static function getFile($name){
-    $profile = self::getProfile($name);
-    if(!empty($profile)){
-      return self::getProfile($name)->get();
-    }
-  }
 
   /**
    * @param $name
@@ -189,78 +247,6 @@ class Config
     return $display[$type][$name]['suffix'] ?? '';
   }
 
-  // Generic Plugin helper
-  protected static function loadXtcPlugin($service, $name) : array{
-    return \Drupal::service($service)
-                  ->getDefinition($name) ?? [];
-  }
-  protected static function createXtcPlugin($service, $name) {
-    return \Drupal::service($service)
-                  ->createInstance($name);
-  }
-
-  // Handler
-  protected static function getXtcHandler($name) : XtcHandlerPluginBase{
-    return self::createXtcPlugin('plugin.manager.xtc_handler', $name);
-  }
-  public static function loadXtcHandler($name) : array{
-    return self::loadXtcPlugin('plugin.manager.xtc_handler', $name);
-  }
-
-  // Search
-  public static function getXtcForm($name) : XtcSearchDefault{
-    return self::createXtcPlugin('plugin.manager.xtcsearch', $name);
-  }
-  public static function loadXtcForm($name) : array{
-    return self::loadXtcPlugin('plugin.manager.xtcsearch', $name);
-  }
-
-  // Server
-  public static function loadXtcServer($name) : array {
-    return self::loadXtcPlugin('plugin.manager.xtc_server', $name);
-  }
-
-  // Display
-  public static function getXtcDisplay($name) : XtcSearchDisplayDefault{
-    return self::createXtcPlugin('plugin.manager.xtcsearch_display', $name);
-  }
-  public static function loadXtcDisplay($name) : array{
-    return self::loadXtcPlugin('plugin.manager.xtcsearch_display', $name);
-  }
-
-  // Pager
-  public static function getXtcPager($name) : XtcSearchPagerPluginBase{
-    return self::createXtcPlugin('plugin.manager.xtcsearch_pager', $name);
-  }
-
-  // Filter
-  public static function getXtcFilter($name) : XtcSearchFilterDefault{
-    return self::createXtcPlugin('plugin.manager.xtcsearch_filter', $name);
-  }
-
-  // Mapping
-  public static function loadXtcMapping($name) : array{
-    return self::loadXtcPlugin('plugin.manager.xtcelastica_mapping', $name);
-  }
-
-  // Request
-  public static function loadXtcRequest($name) : array{
-    return self::loadXtcPlugin('plugin.manager.xtc_request', $name);
-  }
-
-  // Filter Type
-  public static function getXtcFilterType($name) : XtcSearchFilterTypePluginBase{
-    return self::createXtcPlugin('plugin.manager.xtcsearch_filter_type', $name);
-  }
-  public static function loadXtcFilterType($name) : XtcSearchFilterTypePluginBase{
-    $filter = self::getXtcFilter($name);
-    return $filter->getFilterType();
-  }
-
-  // Profile
-  public static function loadXtcProfile($name) : array {
-    return self::loadXtcPlugin('plugin.manager.xtc_profile', $name);
-  }
 
   // Search Block
   public static function getXtcSearchBlock($name){
