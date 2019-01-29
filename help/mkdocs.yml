@@ -1,25 +1,54 @@
 site_name: Xtended Content Documentation
 
-repo_url: https://www.drupal.org/project/xtc
+repo_url: 'https://github.com/codexperfect/xtc'
+repo_name: 'codexperfect/xtc'
+
 site_description: 'Xtended Content provides access to external content from Drupal 8.'
-theme: readthedocs
+theme:
+  name: material
+  feature:
+    tabs: true
+  social:
+    - type: 'github'
+      link: 'https://github.com/codexperfect/xtc'
 
 extra_javascript:
   - js/fix_search.js
 
 markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: true
   - toc:
-      permalink: True
+      permalink: true
+
+# Query string example
+edit_uri: edit/gh-pages/help/docs/
 
 pages:
   - Home: 'index.md'
   - Modules:
-      - Xtended Content: 'modules/xtc.md'
-      - Xtended Content File: 'modules/xtcfile.md'
+    - Xtended Content: 'modules/xtc.md'
+    - Xtended Content File: 'modules/xtcfile.md'
   - Plugins:
-      - Plugins by modules: 'plugins/plugins-by-modules.md'
-      - XTC plugins: 'plugins/xtc-plugins.md'
-      - XTC Elastica plugins: 'plugins/xtcelastica-plugins.md'
-      - XTC File plugins: 'plugins/xtcfile-plugins.md'
-      - XTC Guzzle plugins: 'plugins/xtcguzzle-plugins.md'
-      - XTC Search plugins: 'plugins/xtcsearch-plugins.md'
+    - Plugins by modules: 'plugins/plugins-by-modules.md'
+    - XTC plugins: 'plugins/xtc-plugins.md'
+    - XTC Elastica plugins: 'plugins/xtcelastica-plugins.md'
+    - XTC File plugins: 'plugins/xtcfile-plugins.md'
+    - XTC Guzzle plugins: 'plugins/xtcguzzle-plugins.md'
+    - XTC Search plugins: 'plugins/xtcsearch-plugins.md'
+  - Helpers:
+    - XTC Config helpers: 'helpers/config'
+  - Tutorials:
+    - Search:
+      - Creating a search page: 'tutorials/search-page.md'
+      - Creating a search block: 'tutorials/search-block.md'
+      - Search profile: 'tutorials/search-profile.md'
+      - Search display: 'tutorials/search-display.md'
+    - Profiles:
+      - Elastica profile: 'tutorials/elastica-profile.md'
+      - File profile: 'tutorials/file-profile.md'
+      - Guzzle profile: 'tutorials/guzzle-profile.md'
+    - Defining a Source: 'tutorials/source.md'
+    - Defining a Server: 'tutorials/server.md'
+    - Defining a Request: 'tutorials/request.md'

@@ -81,7 +81,7 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
   }
 
   /**
-   * @param $method
+   * @param        $method
    * @param string $param
    *
    * @return $this
@@ -97,7 +97,7 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
     $this->setData($content);
     return $this;
   }
-  
+
   /**
    * @return mixed
    */

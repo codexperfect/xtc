@@ -151,20 +151,22 @@ class Config
     $xtcform = (Config::getXtcForm($name))->getForm();
     $search = New XtcSearchBuilder($xtcform);
     $search->triggerSearch();
-    $items = $search->getResultSet()->getSuggests()['completion_q'][0]['options'];
-    $textList = [];
+    if(!empty($search->getResultSet())){
+      $items = $search->getResultSet()->getSuggests()['completion_q'][0]['options'];
+      $textList = [];
 
-    foreach($items as $key => $item){
-      $value = strtolower(\Drupal::service('csoec_common.common_service')->replaceAccents($item['text']));
-      if(!in_array($value, $textList)) {
-        $options[$key] = [
-          'value' => $value,
-          'label' => $value,
-        ];
-        $textList[] = $value;
+      foreach($items as $key => $item){
+        $value = strtolower(\Drupal::service('csoec_common.common_service')->replaceAccents($item['text']));
+        if(!in_array($value, $textList)) {
+          $options[$key] = [
+            'value' => $value,
+            'label' => $value,
+          ];
+          $textList[] = $value;
+        }
       }
     }
-    return $options;
+    return $options ?? [];
   }
 
   public static function getFile($name){
