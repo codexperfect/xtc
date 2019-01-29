@@ -51,14 +51,10 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
   public function setConfigfromPlugins()
   {
     $name = $this->profile;
-    $profile = \Drupal::service('plugin.manager.xtc_profile')
-      ->getDefinition($name)
-    ;
-
+    $profile = Config::loadXtcProfile($name);
     $this->webservice = [
       'type' => $profile['type'],
     ];
-
     $this->config['xtc']['serve_client'][$name] = $profile;
 
     $this->buildClient();

@@ -34,14 +34,21 @@ class Config
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
   public static function getProfile($name){
-    $profile = self::loadProfile($name);
+    $profile = self::loadXtcProfile($name);
     if(!empty($profile)){
-      return self::getHandler($profile['type'])
+      return self::getXtcHandler($profile['type'])
                  ->setProfile($profile)
                  ->setOptions()
         ;
     }
     return null;
+  }
+
+  public static function getFile($name){
+    $profile = self::getProfile($name);
+    if(!empty($profile)){
+      return self::getProfile($name)->get();
+    }
   }
 
   /**
@@ -117,14 +124,14 @@ class Config
   }
 
   public static function getHandlerFromProfile($profile){
-    return self::getHandler($profile['type'])
+    return self::getXtcHandler($profile['type'])
                ->setProfile($profile)
                ->setOptions();
     ;
   }
 
   public static function getFromProfile($profile){
-    return self::getHandler($profile['type'])
+    return self::getXtcHandler($profile['type'])
                ->setProfile($profile)
                ->setOptions()
                ->get();
@@ -169,19 +176,9 @@ class Config
     return $options ?? [];
   }
 
-  public static function getFile($name){
-    $profile = self::getProfile($name);
-    if(!empty($profile)){
-      return self::getProfile($name)->get();
-    }
-  }
 
 
-  public static function loadProfile($name) : array {
-    $profile = self::loadPlugin('plugin.manager.xtc_profile', $name);
-    return $profile ?? [];
-  }
-
+  // Prefix - Suffix
   public static function getPrefix($type, $display, $name) : string{
     $display = self::loadXtcDisplay($display);
     return $display[$type][$name]['prefix'] ?? '';
@@ -191,56 +188,80 @@ class Config
     return $display[$type][$name]['suffix'] ?? '';
   }
 
-  protected static function loadPlugin($service, $name) : array{
+  // Generic Plugin helper
+  protected static function loadXtcPlugin($service, $name) : array{
     return \Drupal::service($service)
-                  ->getDefinition($name);
+                  ->getDefinition($name) ?? [];
   }
-  protected static function createPlugin($service, $name) {
+  protected static function createXtcPlugin($service, $name) {
     return \Drupal::service($service)
                   ->createInstance($name);
   }
 
-  protected static function getHandler($name) : XtcHandlerPluginBase{
-    return self::createPlugin('plugin.manager.xtc_handler', $name);
+  // Handler
+  protected static function getXtcHandler($name) : XtcHandlerPluginBase{
+    return self::createXtcPlugin('plugin.manager.xtc_handler', $name);
   }
-  public static function loadHandler($name) : array{
-    return self::loadPlugin('plugin.manager.xtc_handler', $name);
+  public static function loadXtcHandler($name) : array{
+    return self::loadXtcPlugin('plugin.manager.xtc_handler', $name);
   }
 
+  // Search
   public static function getXtcForm($name) : XtcSearchDefault{
-    return self::createPlugin('plugin.manager.xtcsearch', $name);
+    return self::createXtcPlugin('plugin.manager.xtcsearch', $name);
   }
   public static function loadXtcForm($name) : array{
-    return self::loadPlugin('plugin.manager.xtcsearch', $name);
+    return self::loadXtcPlugin('plugin.manager.xtcsearch', $name);
   }
 
+  // Server
+  public static function loadXtcServer($name) : array {
+    return self::loadXtcPlugin('plugin.manager.xtc_server', $name);
+  }
+
+  // Display
   public static function getXtcDisplay($name) : XtcSearchDisplayDefault{
-    return self::createPlugin('plugin.manager.xtcsearch_display', $name);
+    return self::createXtcPlugin('plugin.manager.xtcsearch_display', $name);
   }
   public static function loadXtcDisplay($name) : array{
-    return self::loadPlugin('plugin.manager.xtcsearch_display', $name);
+    return self::loadXtcPlugin('plugin.manager.xtcsearch_display', $name);
   }
 
-  /**
-   * @param $name
-   *
-   * @return \Drupal\xtcsearch\PluginManager\XtcSearchFilterType\XtcSearchFilterTypePluginBase
-   */
-  public static function loadXtcFilter($name) : XtcSearchFilterTypePluginBase{
+  // Pager
+  public static function getXtcPager($name) : XtcSearchDisplayDefault{
+    return self::createXtcPlugin('plugin.manager.xtcsearch_pager', $name);
+  }
+
+  // Filter
+  public static function getXtcFilter($name) : XtcSearchFilterDefault{
+    return self::createXtcPlugin('plugin.manager.xtcsearch_filter', $name);
+  }
+
+  // Mapping
+  public static function loadXtcMapping($name) : array{
+    return self::loadXtcPlugin('plugin.manager.xtcelastica_mapping', $name);
+  }
+
+  // Request
+  public static function loadXtcRequest($name) : array{
+    return self::loadXtcPlugin('plugin.manager.xtc_request', $name);
+  }
+
+  // Filter Type
+  public static function getXtcFilterType($name) : XtcSearchFilterTypePluginBase{
+    return self::createXtcPlugin('plugin.manager.xtcsearch_filter_type', $name);
+  }
+  public static function loadXtcFilterType($name) : XtcSearchFilterTypePluginBase{
     $filter = self::getXtcFilter($name);
     return $filter->getFilterType();
   }
 
-  /**
-   * @param $name
-   *
-   * @return \Drupal\xtcsearch\PluginManager\XtcSearchFilter\XtcSearchFilterDefault
-   */
-  public static function getXtcFilter($name) : XtcSearchFilterDefault{
-    $service = \Drupal::service('plugin.manager.xtcsearch_filter');
-    return  $service->createInstance($name);
+  // Profile
+  public static function loadXtcProfile($name) : array {
+    return self::loadXtcPlugin('plugin.manager.xtc_profile', $name);
   }
 
+  // Search Block
   public static function getXtcSearchBlock($name){
     $block_manager = \Drupal::service('plugin.manager.block');
     $config = [];
@@ -265,10 +286,9 @@ class Config
 
 
 
-  public static function getXtcProfile($name){
-    $profile = \Drupal::service('plugin.manager.xtc_profile')
-      ->getDefinition($name)
-    ;
+  // Profile - legacy
+  public static function getXtcRequestFromProfile($name){
+    $profile = self::loadXtcProfile($name);
     $xtcrequest = (New $profile['service']($name));
     if($xtcrequest instanceof AbstractXtcRequest){
       $xtcrequest->setConfigfromPlugins();

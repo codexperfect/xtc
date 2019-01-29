@@ -2,10 +2,10 @@
 
 ## Loading an Elastica profile
 
-To load an Elasticsearch client as a service, simply provide the profile name, the helper static function `Config::getXtcProfile()` from `\Drupal\xtc\XtendedContent\API\Config`.
+To load an Elasticsearch client as a service, simply provide the profile name, the helper static function `Config::getXtcRequestFromProfile()` from `\Drupal\xtc\XtendedContent\API\Config`.
 
 ```php
-public static function getXtcProfile($name){
+public static function getXtcRequestFromProfile($name){
   $profile = \Drupal::service('plugin.manager.xtc_profile')
     ->getDefinition($name)
   ;
@@ -20,7 +20,7 @@ public static function getXtcProfile($name){
 To load a content, here an example of code: 
 
 ```php
-$results = $this->getESHits(Config::getXtcProfile($name), $uri);
+$results = $this->getESHits(Config::getXtcRequestFromProfile($name), $uri);
 ```
 
 Where:

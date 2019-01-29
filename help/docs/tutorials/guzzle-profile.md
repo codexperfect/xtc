@@ -2,16 +2,16 @@
 
 ## Loading a Guzzle profile
 
-To load an Guzzle client as a service, simply provide the profile name, the helper static function `Config::getXtcProfile()` from `\Drupal\xtc\XtendedContent\API\Config`.
+To load an Guzzle client as a service, simply provide the profile name, the helper static function `Config::getXtcRequestFromProfile()` from `\Drupal\xtc\XtendedContent\API\Config`.
 
 ```php
-$profileService = Config::getXtcProfile('user_profile');
+$profileService = Config::getXtcRequestFromProfile('user_profile');
 ```
 
 That does:
 
 ```php
-public static function getXtcProfile($name){
+public static function getXtcRequestFromProfile($name){
   $profile = \Drupal::service('plugin.manager.xtc_profile')
     ->getDefinition($name)
   ;
@@ -23,7 +23,7 @@ public static function getXtcProfile($name){
 }
 ```
 
-`Config::getXtcProfile()` returns an instance of `AbstractXtcRequest` as it is a very high level helper function. When getting a Guzzle profile, 
+`Config::getXtcRequestFromProfile()` returns an instance of `AbstractXtcRequest` as it is a very high level helper function. When getting a Guzzle profile, 
 we expect the built Client to be using Guzzle - see `\Drupal\xtcguzzle\XtendedContent\Serve\XtcRequest\AbstractGuzzleXtcRequest`: 
 
 ```php
