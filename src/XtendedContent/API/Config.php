@@ -19,6 +19,7 @@ use Drupal\xtcsearch\PluginManager\XtcSearchDisplay\XtcSearchDisplayDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchFilter\XtcSearchFilterDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchFilterType\XtcSearchFilterTypePluginBase;
 use Drupal\xtcsearch\SearchBuilder\XtcSearchBuilder;
+use Drupal\xtcsearch\PluginManager\XtcSearchPager\XtcSearchPagerPluginBase;
 
 class Config
 {
@@ -228,7 +229,7 @@ class Config
   }
 
   // Pager
-  public static function getXtcPager($name) : XtcSearchDisplayDefault{
+  public static function getXtcPager($name) : XtcSearchPagerPluginBase{
     return self::createXtcPlugin('plugin.manager.xtcsearch_pager', $name);
   }
 
