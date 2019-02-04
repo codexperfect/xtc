@@ -15,7 +15,7 @@ use Drupal\xtc\XtendedContent\API\Config;
  *
  * @package Drupal\xtc\XtendedContent\Serve\Client
  */
-class AbstractClient implements ClientInterface
+abstract class AbstractClient implements ClientInterface
 {
 
   /**
@@ -36,7 +36,7 @@ class AbstractClient implements ClientInterface
   /**
    * @var array
    */
-  protected $clientProfile;
+  public $clientProfile;
 
   /**
    * AbstractClient constructor.

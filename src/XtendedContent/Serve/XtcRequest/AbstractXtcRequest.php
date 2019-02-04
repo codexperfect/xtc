@@ -10,6 +10,7 @@ namespace Drupal\xtc\XtendedContent\Serve\XtcRequest;
 
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Site\Settings;
 use Drupal\xtc\XtendedContent\API\Config;
 use Drupal\xtc\XtendedContent\Serve\Client\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -47,6 +48,19 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
 
   abstract protected function buildClient();
 
+  public function setConfigfromPlugins()
+  {
+    $name = $this->profile;
+    $profile = Config::loadXtcProfile($name);
+    $this->webservice = [
+      'type' => $profile['type'],
+    ];
+    $this->config['xtc']['serve_client'][$name] = $profile;
+
+    $this->buildClient();
+    return $this;
+  }
+
   /**
    * @return ClientInterface
    */
@@ -63,7 +77,7 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
   }
 
   /**
-   * @param $method
+   * @param        $method
    * @param string $param
    *
    * @return $this
@@ -79,7 +93,7 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
     $this->setData($content);
     return $this;
   }
-  
+
   /**
    * @return mixed
    */
@@ -98,7 +112,14 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
 
   public function getConfigFromYaml()
   {
-    return Config::getConfigs('serve', 'client');
+    $params = Config::getConfigs('serve', 'client');
+
+    // Enable config override from settings.local.php
+    $settings = Settings::get('xtc.serve_client');
+    if(!empty($settings)){
+      return array_replace_recursive($params, $settings);
+    }
+    return $params;
   }
 
   /**
@@ -146,4 +167,12 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
     $this->data = $data;
     return $this;
   }
+
+  /**
+   * @return string
+   */
+  public function getProfile(): string {
+    return $this->profile;
+  }
+
 }

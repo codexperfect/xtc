@@ -23,4 +23,5 @@ interface XtcRequestInterface
 
   public function getWebservice();
 
+  public function setConfigfromPlugins();
 }

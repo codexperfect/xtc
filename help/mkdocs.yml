@@ -1,0 +1,55 @@
+site_name: Xtended Content suite Documentation
+
+repo_url: 'https://github.com/codexperfect/xtc'
+repo_name: 'codexperfect/xtc'
+
+site_description: 'Xtended Content provides access to external content from Drupal 8.'
+theme:
+  name: material
+  feature:
+    tabs: true
+  social:
+    - type: 'github'
+      link: 'https://github.com/codexperfect/xtc'
+
+extra_javascript:
+  - js/fix_search.js
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: true
+  - toc:
+      permalink: true
+
+# Query string example
+edit_uri: edit/gh-pages/help/docs/
+
+pages:
+  - About: 'index.md'
+  - Modules:
+    - Xtended Content: 'modules/xtc.md'
+    - Xtended Content Elastica: 'modules/xtcelastica.md'
+    - Xtended Content File: 'modules/xtcfile.md'
+    - Xtended Content Guzzle: 'modules/xtcguzzle.md'
+    - Xtended Content Search: 'modules/xtcsearch.md'
+  - Plugins:
+    - Plugins by modules: 'plugins/plugins-by-modules.md'
+    - XTC plugins: 'plugins/xtc-plugins.md'
+    - XTC Elastica plugins: 'plugins/xtcelastica-plugins.md'
+    - XTC File plugins: 'plugins/xtcfile-plugins.md'
+    - XTC Guzzle plugins: 'plugins/xtcguzzle-plugins.md'
+    - XTC Search plugins: 'plugins/xtcsearch-plugins.md'
+  - Helpers:
+    - Plugins Helpers: 'helpers/plugins-helpers.md'
+    - Config Helpers: 'helpers/config.md'
+  - Tutorials:
+    - Profile › Elastica: 'tutorials/elastica-profile.md'
+    - Profile › File: 'tutorials/file-profile.md'
+    - Profile › Guzzle: 'tutorials/guzzle-profile.md'
+    - Search › page: 'tutorials/search-page.md'
+    - Search › block: 'tutorials/search-block.md'
+    - Search › profile: 'tutorials/search-profile.md'
+    - Search › display: 'tutorials/search-display.md'
+    - Server: 'tutorials/server.md'
+    - Request: 'tutorials/request.md'
