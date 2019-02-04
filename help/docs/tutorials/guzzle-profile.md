@@ -69,7 +69,7 @@ The plugin is defined in the Xtended Content (`xtc`) module: `xtc/src/PluginMana
 
 ## Structure
 
-A File profile definition looks lake this:
+A Guzzle profile definition looks like this:
 
 ```yaml
 user_profile:

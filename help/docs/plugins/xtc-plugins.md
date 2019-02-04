@@ -1,4 +1,4 @@
-## XTC Plugins
+# XTC Plugins
 
 4 plugin managers are defined in `xtc`.
 

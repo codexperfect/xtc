@@ -51,14 +51,14 @@ The plugin is defined in the Xtended Content (`xtc`) module: `xtc/src/PluginMana
 
 ## Structure
 
-A File profile definition looks lake this:
+An Elastica profile definition looks like this:
 
 ```yaml
 article:
   label: 'Article'
   description: ''
   type: 'elastica'
-  server: 'csoec-es'
+  server: 'xtc_elastica'
   request: 'contenu-by-id'
   service: 'Drupal\xtcelastica\XtendedContent\Serve\XtcRequest\GetElasticaXtcRequest'
 ```
@@ -70,7 +70,7 @@ article:
   label: 'Article'
   description: ''
   type: 'elastica'
-  server: 'csoec-es'
+  server: 'xtc_elastica'
   request: 'contenu-by-id'
   service: 'Drupal\xtcelastica\XtendedContent\Serve\XtcRequest\GetElasticaXtcRequest'
   args:

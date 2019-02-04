@@ -1,4 +1,4 @@
-## XTC Search Plugins
+# XTC Search Plugins
 
 5 plugin managers are defined in `xtcsearch`.
 

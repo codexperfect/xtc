@@ -2,10 +2,10 @@
 
 ## Loading a Server profile
 
-To load a content, simply provide the profile name to the `getFile()` static function from the helper class `\Drupal\xtc\XtendedContent\API\Config`. 
+To load a content, simply provide the profile name to the `get()` static function from the helper class `\Drupal\xtc\XtendedContent\API\XtcServer`. 
 
 ```php
-$content = \Drupal\xtc\XtendedContent\API\Config::getFile('test_text');
+$content = \Drupal\xtc\XtendedContent\API\XtcServer::get('test_text');
 ```
 
 ## Plugin definition
@@ -15,122 +15,98 @@ This is a Drupal 8 YAML plugin.
 ## Yaml file
 
 The profiles can be defined in a YAML file that follows this pattern: 
-`[module_name].xtc_profiles.yml`.
+`[module_name].xtc_servers.yml`.
 
-The plugin is defined in the Xtended Content (`xtc`) module: `xtc/src/PluginManager/XtcProfile/XtcProfilePluginManager.php`.
+The plugin is defined in the Xtended Content (`xtc`) module: `xtc/src/PluginManager/XtcServer/XtcServerPluginManager.php`.
 
 ## Structure
 
-A File profile definition looks lake this:
+A Server profile definition looks like this:
 
 ```yaml
-test_text:
-  label: 'Text file'
-  description: ''
-  type: 'text'
-  abs_path: false
-  module: 'xtcfile'
-  path: 'example/demo.txt'
+xtc_elastica:
+  label: 'XTC Elastica'
+  description: 'Elastica Server, for multiple environments.'
+  type: 'elastica'
+  env: 'prod'
+  connection:
+    dev:
+      host: '127.0.0.123'
+      port: 9200
+    rec:
+      host: '192.168.1.123'
+      port: 9200
+    prod:
+      host: '192.168.1.456'
+      port: 9200
 ```
 
 `label` (string) and `description` (string) are mandatory for any Drupal 8 plugin definition.
 
-### Handler type `type` (string)
+### Server type `type` (string)
 
 Available types provided by the XTC File are:
 
-- Csv `csv`: use `LoadCsv` class (based on [https://github.com/parsecsv/parsecsv-for-php]()) to load Comma-Separated Values files. 
-- Html `html`: load HTML file. 
-- Json `json`: load Json file through Drupal Json serializer.
-- Markdown `md`: use `LaodMarkdown` class (using **erusev/parsedown**, [https://github.com/erusev/parsedown]()) to load Markdown content.  
-- Text`text`: load plain Text file.
-- Yaml `yaml`: load Yaml file through Drupal Yaml serializer.
+- Elastica `elastica`: used by XTC Elastica handler 
+- Guzzle `guzzle`: used by XTC Guzzle handler 
 
-#### Dynamic handlers
+### Server active environment `env` (string)
 
-Two dynamic handlers are provided for Documentation:
+Defines the active environment to be used by the Drupal instance. Environments are used to facilitate deployment between different environments. 
 
-- MkDocs `mkdocs`: provide a light API to display MkDocs ([https://www.mkdocs.org/]()) based documentation in the administration area.
-- Readme `readme`: extends Markdown type to provide display modules Readme files in the administration area.
-
-`getDocs()` static function from `\Drupal\xtc\XtendedContent\API\Config` provides an example for dynamics handlers:
+Active environment can be overriden in the `settings.local.php` file:
 
 ```php
-public static function getDocs($module){
-  $profile = [
-    'type' => 'mkdocs',
-    'abs_path' => false,
-    'module' => $module,
-    'path' => 'help/mkdocs.yml',
-  ];
-  $content = self::getFromProfile($profile);
-  if(!empty($content) && is_array($content)) {
-    return $content;
-  }
-  return "<h2>Documentation needs to be created.</h2>
-         <p>Documentation follows <b><a href='https://www.mkdocs.org/' target='_blank'>
-         mkdocs</a></b> standards.</p>
-      ";
-}
-``` 
-
-`Config::getFromProfile()` needs to be used in that case.
-This function directly trigger a `get()`;
-
-```php
-public static function getFromProfile($profile){
-  return self::getHandler($profile['type'])
-             ->setProfile($profile)
-             ->setOptions()
-             ->get();
-  ;
-}
+$settings['xtc.serve_client']['xtc']['serve_client']['server']['xtc_elastica']['env'] = 'dev';
 ```
 
-If for any reason, an action needs to be done before the get(), the `Config::getHandlerFromProfile()` can be prefered: 
+> If 2 different environments need to be used on the same instance of Drupal, 
+it means you should define 2 different server profiles.
 
-```php
-public static function getHandlerFromProfile($profile){
-  return self::getHandler($profile['type'])
-             ->setProfile($profile)
-             ->setOptions();
-  ;
-}
+### Additional values
+
+Depending on the Handler that need a **Server** definition, you might need to define additional values.
+
+For example, **XTC Elastica** expects a Connection `connection` (array) to be defined, 
+while **XTC Guzzle** API needs a Path `path` (array) and accepts Options `options` (array). In this case, 
+Options are, transparently, the ones from the Guzzle API. 
+
+```yaml
+countries:
+  label: 'Countries'
+  description: ''
+  type: 'guzzle'
+  env: 'prod-int'
+  options:
+    verify: false
+    timeout: 5
+  path:
+    prod-int:
+      tls: false
+      server: "data.example.com"
+      port: 8001
+      endpoint: "pays"
+    prod-ext:
+      tls: true
+      server: "data.example.com"
+      port: 8011
+      endpoint: "pays"
+    rec-int:
+      tls: false
+      server: "data-rec.example.com"
+      port: 8001
+      endpoint: "pays"
+    rec-ext:
+      tls: true
+      server: "data-rec.example.com"
+      port: 8011
+      endpoint: "pays"
 ```
 
-### Absolute path `abs_path` (boolean)
+## Uses
 
-Whether the provided path is absolute or local.
+Server profiles are used by:
 
-### Module `module` (string)
-
-Module machinename where the file is expected to be found.
-
-### Path `path` (string)
-
-Path from the module root directory.
-
-
-## Extending types list
-
-Any new File type handler should be based on `\Drupal\xtcfile\Plugin\XtcHandler\FileBase`.
-
-Example from the `Text` type:
-
-```php
-namespace Drupal\xtcfile\Plugin\XtcHandler;
-
-/**
- * Plugin implementation of the xtc_handler.
- *
- * @XtcHandler(
- *   id = "text",
- *   label = @Translation("Text File for XTC"),
- *   description = @Translation("Text File for XTC description.")
- * )
- */
-class Text extends FileBase
-{
-
-}
-```
+- XTC Elastica
+- XTC Guzzle
+- XTC Search
