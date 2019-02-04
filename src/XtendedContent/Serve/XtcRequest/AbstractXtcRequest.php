@@ -51,14 +51,10 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
   public function setConfigfromPlugins()
   {
     $name = $this->profile;
-    $profile = \Drupal::service('plugin.manager.xtc_profile')
-      ->getDefinition($name)
-    ;
-
+    $profile = Config::loadXtcProfile($name);
     $this->webservice = [
       'type' => $profile['type'],
     ];
-
     $this->config['xtc']['serve_client'][$name] = $profile;
 
     $this->buildClient();
@@ -119,7 +115,7 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
     $params = Config::getConfigs('serve', 'client');
 
     // Enable config override from settings.local.php
-    $settings = Settings::get('csoec.serve_client');
+    $settings = Settings::get('xtc.serve_client');
     if(!empty($settings)){
       return array_replace_recursive($params, $settings);
     }

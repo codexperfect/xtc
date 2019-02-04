@@ -60,21 +60,16 @@ abstract class XtcHandlerPluginBase extends PluginBase
   }
 
   /**
-   * @param string $method
+   * @param        $method
    * @param string $param
    *
-   * @return ClientInterface
+   * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase
    */
-  public function init($method, $param = '') : ClientInterface{
+  public function init($method, $param = '') : XtcHandlerPluginBase{
     $this->method = $method;
     $this->param = $param;
     return $this;
   }
 
-  protected function getContent(){
-    if(file_exists($this->options['path'])){
-      $this->content = file_get_contents($this->options['path']);
-    }
-  }
 
 }

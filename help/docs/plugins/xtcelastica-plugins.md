@@ -1,4 +1,4 @@
-## XTC Elastica Plugins
+# XTC Elastica Plugins
 
 1 plugin manager is defined in `xtcelastica`.
 

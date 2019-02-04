@@ -1,4 +1,4 @@
-## Plugins by modules
+# Plugins by modules
 
 10 plugins managers are defined throughout the XTC modules:
 

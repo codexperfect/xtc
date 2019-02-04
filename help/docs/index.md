@@ -1,4 +1,4 @@
-## About
+# About
 
 [Xtended Content](https://www.drupal.org/project/xtc) is a Drupal module that provides access to external content from Drupal 8.
 
@@ -22,7 +22,3 @@ Many Helper functions can be found in the `XtendedContent/API` directory in `xtc
 
 - Yaml plugins are used when the Default class is mostly used, and plugins are data driven.
 - Annotation plugins are used when plugins are code driven.
-
-## Contributing new modules
-
-lorem...
