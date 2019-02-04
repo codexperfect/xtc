@@ -9,18 +9,17 @@
 namespace Drupal\xtc\XtendedContent\API;
 
 
+use Drupal\Component\Serialization\Json;
 use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
 
-class XtcHandler extends Plugin
+class XtcHandler extends PluginBase
 {
 
   public static function get($name): XtcHandlerPluginBase{
-    dump(\Drupal::service(static::getService()));
-    dump(\Drupal::service(static::getService())->getDefinitions());
     return parent::get($name);
   }
 
-  protected static function getService() :string {
+  protected static function getService() : string {
     return 'plugin.manager.xtc_handler';
   }
 
@@ -32,7 +31,7 @@ class XtcHandler extends Plugin
   public static function getHandlerFromProfile($name){
     $profile = XtcProfile::load($name);
     if(!empty($profile)){
-      return XtcHandler::get($profile['type'])
+      return self::get($profile['type'])
                  ->setProfile($profile)
                  ->setOptions()
         ;
@@ -46,4 +45,13 @@ class XtcHandler extends Plugin
       return $handler->get();
     }
   }
+
+  public static function getGraphQL($name) {
+    $handler = XtcHandler::getHandlerFromProfile($name);
+    if(!empty($handler)) {
+      return Json::decode($handler->get());
+    }
+    return [];
+  }
+
 }

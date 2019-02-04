@@ -9,7 +9,7 @@
 namespace Drupal\xtc\XtendedContent\API;
 
 
-class Plugin
+abstract class PluginBase
 {
 
   public static function get($name){

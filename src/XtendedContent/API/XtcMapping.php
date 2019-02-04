@@ -11,14 +11,14 @@ namespace Drupal\xtc\XtendedContent\API;
 
 use Drupal\xtcelastica\PluginManager\XtcElasticaMappingManagerInterface;
 
-class XtcMapping extends Plugin
+class XtcMapping extends PluginBase
 {
 
   public static function get($name): XtcElasticaMappingManagerInterface{
     return parent::get($name);
   }
 
-  protected static function getService() :string {
+  protected static function getService() : string {
     return 'plugin.manager.xtcelastica_mapping';
   }
 }

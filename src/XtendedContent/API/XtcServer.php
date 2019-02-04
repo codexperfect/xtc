@@ -11,14 +11,14 @@ namespace Drupal\xtc\XtendedContent\API;
 
 use Drupal\xtc\PluginManager\XtcServer\XtcServerDefault;
 
-class XtcServer extends Plugin
+class XtcServer extends PluginBase
 {
 
   public static function get($name): XtcServerDefault{
     return parent::get($name);
   }
 
-  protected static function getService() :string {
+  protected static function getService() : string {
     return 'plugin.manager.xtc_server';
   }
 }

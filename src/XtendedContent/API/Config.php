@@ -9,264 +9,258 @@
 namespace Drupal\xtc\XtendedContent\API;
 
 
-use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Link;
 use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
-use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
-use Drupal\xtcfile\Controller\XtcDocumentationController;
 use Drupal\xtcsearch\PluginManager\XtcSearch\XtcSearchDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchDisplay\XtcSearchDisplayDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchFilter\XtcSearchFilterDefault;
 use Drupal\xtcsearch\PluginManager\XtcSearchFilterType\XtcSearchFilterTypePluginBase;
 use Drupal\xtcsearch\PluginManager\XtcSearchPager\XtcSearchPagerPluginBase;
-use Drupal\xtcsearch\SearchBuilder\XtcSearchBuilder;
-use Drupal\xtcsearch\PluginManager\XtcSearchPager\XtcSearchPagerPluginBase;
 
 class Config
 {
 
-  /**
+  /**********
    * PROFILE
-   */
+   *********/
 
+
+  /**
+   * @param $name
+   *
+   * @return array
+   * @deprecated use XtcHandler::load
+   */
   public static function loadXtcHandler($name) : array{
     return XtcHandler::load($name);
   }
 
   // Search
+  /**
+   * @param $name
+   *
+   * @return \Drupal\xtcsearch\PluginManager\XtcSearch\XtcSearchDefault
+   * @deprecated use XtcForm::get
+   */
   public static function getXtcForm($name) : XtcSearchDefault{
     return XtcForm::get($name);
-  }
-  public static function loadXtcForm($name) : array{
-    return XtcForm::load($name);
-  }
-
-  // Server
-  public static function loadXtcServer($name) : array {
-    return XtcServer::load($name);
-  }
-
-  // Display
-  public static function getXtcDisplay($name) : XtcSearchDisplayDefault{
-    return XtcDisplay::get($name);
-  }
-  public static function loadXtcDisplay($name) : array{
-    return XtcDisplay::load($name);
-  }
-
-  // Pager
-  public static function getXtcPager($name) : XtcSearchPagerPluginBase{
-    return XtcPager::get($name);
-  }
-
-  // Filter
-  public static function getXtcFilter($name) : XtcSearchFilterDefault{
-    return XtcFilter::get($name);
-  }
-
-  // Mapping
-  public static function loadXtcMapping($name) : array{
-    return XtcMapping::load($name);
-  }
-
-  // Request
-  public static function loadXtcRequest($name) : array{
-    return XtcRequest::load($name);
-  }
-
-  // Filter Type
-  public static function getXtcFilterType($name) : XtcSearchFilterTypePluginBase{
-    return XtcFilterType::get($name);
-  }
-  public static function loadXtcFilterType($name) : array {
-    return XtcFilterType::load($name);
-  }
-
-  // Profile
-  public static function getProfile($name) : XtcHandlerPluginBase{
-    return XtcHandler::getHandlerFromProfile($name);
-  }
-  public static function loadXtcProfile($name) : array {
-    return XtcProfile::load($name);
-  }
-
-  // File
-  public static function getFile($name) {
-    return XtcHandler::getFile($name);
-  }
-
-
-
-
-
-
-
-
-
-  public static function transliterate($phrase){
-    $string = strtolower(\Drupal::transliteration()->transliterate($phrase));
-    return str_replace(' ', '_', $string);
-  }
-
-
-
-  /**
-   * @param $name
-   *
-   * @return string
-   */
-  public static function getHelp($module){
-    $links =(New XtcDocumentationController())->getHelp();
-    return self::getHelpFile($module)
-           . $links;
-  }
-
-  /**
-   * @param $name
-   *
-   * @return string
-   */
-  public static function getHelpFile($module){
-    foreach(['help/help.md'] as $path){
-      $profile = [
-        'type' => 'markdown',
-        'abs_path' => false,
-        'module' => $module,
-        'path' => $path,
-      ];
-      $content = self::getFromProfile($profile);
-      if(!empty($content)){
-        return $content;
-      }
-    }
-    return '';
-  }
-
-  public static function getDocs($module){
-    $profile = [
-      'type' => 'mkdocs',
-      'abs_path' => false,
-      'module' => $module,
-      'path' => 'help/mkdocs.yml',
-    ];
-    $content = self::getFromProfile($profile);
-    if(!empty($content) && is_array($content)) {
-      return $content;
-    }
-    return "<h2>Documentation needs to be created.</h2>
-           <p>Documentation follows <b><a href='https://www.mkdocs.org/' target='_blank'>
-           mkdocs</a></b> standards.</p>
-        ";
-  }
-
-  /**
-   * @param $name
-   *
-   * @return string
-   */
-  public static function getDocsPage($module, $path){
-    $profile = [
-      'type' => 'mkdocs',
-      'abs_path' => false,
-      'module' => $module,
-      'path' => 'help/docs/' . $path,
-    ];
-    $content = self::getFromProfile($profile);
-    if(!empty($content)) {
-      return $content;
-    }
-    $link = Link::createFromRoute('Index', 'xtcfile.docs.docs',
-                                  ['module' => $module])->toString();
-    return "<h2>Page not found.</h2>
-           <p>Go back to the documentation index: $link.</p>
-        ";
-  }
-
-  public static function getHandlerFromProfile($profile){
-    return self::getXtcHandler($profile['type'])
-               ->setProfile($profile)
-               ->setOptions();
-    ;
-  }
-
-  public static function getFromProfile($profile){
-    return self::getXtcHandler($profile['type'])
-               ->setProfile($profile)
-               ->setOptions()
-               ->get();
-    ;
   }
 
   /**
    * @param $name
    *
    * @return array
+   * @deprecated use XtcForm::load
    */
-  public static function getSearch($name){
-    $xtcsearch = self::getXtcForm($name);
-    return \Drupal::formBuilder()
-                  ->getForm($xtcsearch->getForm());
+  public static function loadXtcForm($name) : array{
+    return XtcForm::load($name);
+  }
+
+  // Server
+  /**
+   * @param $name
+   *
+   * @return array
+   * @deprecated use XtcServer::load
+   */
+  public static function loadXtcServer($name) : array {
+    return XtcServer::load($name);
+  }
+
+  // Display
+  /**
+   * @param $name
+   *
+   * @return \Drupal\xtcsearch\PluginManager\XtcSearchDisplay\XtcSearchDisplayDefault
+   *
+   * @deprecated use XtcDisplay::get
+   */
+  public static function getXtcDisplay($name) : XtcSearchDisplayDefault{
+    return XtcDisplay::get($name);
   }
 
   /**
    * @param $name
    *
+   * @return array
+   * @deprecated use XtcDisplay::load
+   */
+  public static function loadXtcDisplay($name) : array{
+    return XtcDisplay::load($name);
+  }
+
+  // Pager
+  /**
+   * @param $name
+   *
+   * @return \Drupal\xtcsearch\PluginManager\XtcSearchPager\XtcSearchPagerPluginBase
+   *
+   * @deprecated use XtcPager::get
+   */
+  public static function getXtcPager($name) : XtcSearchPagerPluginBase{
+    return XtcPager::get($name);
+  }
+
+  // Filter
+  /**
+   * @param $name
+   *
+   * @return \Drupal\xtcsearch\PluginManager\XtcSearchFilter\XtcSearchFilterDefault
+   *
+   * @deprecated use XtcFilter::get
+   */
+  public static function getXtcFilter($name) : XtcSearchFilterDefault{
+    return XtcFilter::get($name);
+  }
+
+  // Mapping
+  /**
+   * @param $name
+   *
+   * @return array
+   * @deprecated use XtcMapping::load
+   */
+  public static function loadXtcMapping($name) : array{
+    return XtcMapping::load($name);
+  }
+
+  // Request
+  /**
+   * @param $name
+   *
+   * @return array
+   * @deprecated use XtcRequest::load
+   */
+  public static function loadXtcRequest($name) : array{
+    return XtcRequest::load($name);
+  }
+
+  // Filter Type
+  /**
+   * @param $name
+   *
+   * @return \Drupal\xtcsearch\PluginManager\XtcSearchFilterType\XtcSearchFilterTypePluginBase
+   * @deprecated use XtcFilterType::get
+   */
+  public static function getXtcFilterType($name) : XtcSearchFilterTypePluginBase{
+    return XtcFilterType::get($name);
+  }
+
+  /**
+   * @param $name
+   *
+   * @return array
+   * @deprecated use XtcFilterType::load
+   */
+  public static function loadXtcFilterType($name) : array {
+    return XtcFilterType::load($name);
+  }
+
+  // Profile
+  /**
+   * @param $name
+   *
+   * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase
+   * @deprecated use XtcHandler::getHandlerFromProfile
+   */
+  public static function getProfile($name) : XtcHandlerPluginBase{
+    return XtcHandler::getHandlerFromProfile($name);
+  }
+
+  /**
+   * @param $name
+   *
+   * @return array
+   * @deprecated use XtcProfile::load
+   */
+  public static function loadXtcProfile($name) : array {
+    return XtcProfile::load($name);
+  }
+
+  // File
+  /**
+   * @param $name
+   *
+   * @return string
+   * @deprecated use XtcHandler::getFile
+   */
+  public static function getFile($name) {
+    return XtcHandler::getFile($name);
+  }
+
+
+  //------------//
+
+  /**
+   * @param $phrase
+   *
    * @return mixed
+   * @deprecated use ToolBox::transliterate
+   */
+  public static function transliterate($phrase){
+    return ToolBox::transliterate($phrase);
+  }
+
+
+  /**
+   * @param $name
+   *
+   * @return array
+   * @deprecated use XtcSearch::get
+   */
+  public static function getSearch($name){
+    return XtcSearch::get($name);
+  }
+
+  /**
+   * @param $name
+   *
+   * @return array
+   * @deprecated use XtcAutocomplete::get
    */
   public static function getAutocomplete($name){
-    $xtcform = (Config::getXtcForm($name))->getForm();
-    $search = New XtcSearchBuilder($xtcform);
-    $search->triggerSearch();
-    if(!empty($search->getResultSet())){
-      $items = $search->getResultSet()->getSuggests()['completion_q'][0]['options'];
-      $textList = [];
-
-      foreach($items as $key => $item){
-        $value = strtolower(\Drupal::service('csoec_common.common_service')->replaceAccents($item['text']));
-        if(!in_array($value, $textList)) {
-          $options[$key] = [
-            'value' => $value,
-            'label' => $value,
-          ];
-          $textList[] = $value;
-        }
-      }
-    }
-    return $options ?? [];
+    return XtcAutocomplete::get($name);
   }
 
 
 
   // Prefix - Suffix
+
+  /**
+   * @param $type
+   * @param $display
+   * @param $name
+   *
+   * @return string
+   * @deprecated use ToolBox::getPrefix
+   */
   public static function getPrefix($type, $display, $name) : string{
-    $display = self::loadXtcDisplay($display);
-    return $display[$type][$name]['prefix'] ?? '';
+    return ToolBox::getPrefix($type, $display, $name);
   }
+  /**
+   *
+   * @param $type
+   * @param $display
+   * @param $name
+   *
+   * @return string
+   * @deprecated use ToolBox::getSuffix
+   */
   public static function getSuffix($type, $display, $name) : string{
-    $display = self::loadXtcDisplay($display);
-    return $display[$type][$name]['suffix'] ?? '';
+    return ToolBox::getSuffix($type, $display, $name);
   }
 
 
   // Search Block
+
+  /**
+   * @param $name
+   *
+   * @return array
+   * @deprecated use XtcSearch::getBlock
+   */
   public static function getXtcSearchBlock($name){
-    $block_manager = \Drupal::service('plugin.manager.block');
-    $config = [];
-    $plugin_block = $block_manager->createInstance($name, $config);
-    if($plugin_block instanceof BlockBase){
-      $access_result = $plugin_block->access(\Drupal::currentUser());
-      if (is_object($access_result) && $access_result->isForbidden()
-          || is_bool($access_result) && !$access_result) {
-        // You might need to add some cache tags/contexts.
-        return [];
-      }
-      return $plugin_block->build();
-    }
+    return XtcSearch::getBlock($name);
   }
-
-
-
-
 
 
 
@@ -274,15 +268,23 @@ class Config
 
 
   // Profile - legacy
+
+  /**
+   * @param $name
+   *
+   * @return mixed
+   * @deprecated use XtcRequest::getXtcRequestFromProfile
+   */
   public static function getXtcRequestFromProfile($name){
-    $profile = self::loadXtcProfile($name);
-    $xtcrequest = (New $profile['service']($name));
-    if($xtcrequest instanceof AbstractXtcRequest){
-      $xtcrequest->setConfigfromPlugins();
-    }
-    return $xtcrequest;
+    return XtcRequest::getXtcRequestFromProfile($name);
   }
 
+  /**
+   * @param $work
+   * @param $task
+   *
+   * @return array
+   */
   public static function getConfigs($work, $task){
     return [
       'xtc' => self::mergeConfig($work, $task),
@@ -291,7 +293,7 @@ class Config
 
   private static function mergeConfig($work, $task){
     $xtcList = self::getList($work, $task);
-    foreach ($xtcList as $key => $config){
+    foreach ($xtcList as $config){
       $configs[] = \Drupal::config($config)->getRawData()['xtcontent'];
     }
 
