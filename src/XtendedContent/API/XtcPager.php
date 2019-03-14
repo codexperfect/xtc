@@ -11,10 +11,10 @@ namespace Drupal\xtc\XtendedContent\API;
 
 use Drupal\xtcsearch\PluginManager\XtcSearchPager\XtcSearchPagerPluginBase;
 
-class XtcPager extends PluginBase
+class XtcPager extends XtcPluginBase
 {
 
-  public static function get($name): XtcSearchPagerPluginBase{
+  public static function get($name, $options = []): XtcSearchPagerPluginBase{
     return parent::get($name);
   }
 

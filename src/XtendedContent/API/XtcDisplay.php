@@ -11,10 +11,10 @@ namespace Drupal\xtc\XtendedContent\API;
 
 use Drupal\xtcsearch\PluginManager\XtcSearchDisplay\XtcSearchDisplayDefault;
 
-class XtcDisplay extends PluginBase
+class XtcDisplay extends XtcPluginBase
 {
 
-  public static function get($name): XtcSearchDisplayDefault{
+  public static function get($name, $options = []): XtcSearchDisplayDefault{
     return parent::get($name);
   }
 

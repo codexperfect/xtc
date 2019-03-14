@@ -12,7 +12,7 @@ namespace Drupal\xtc\XtendedContent\API;
 use Drupal\xtc\PluginManager\XtcRequest\XtcRequestDefault;
 use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
 
-class XtcRequest extends PluginBase
+class XtcRequest extends XtcPluginBase
 {
 
   /**
@@ -20,7 +20,7 @@ class XtcRequest extends PluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcRequest\XtcRequestDefault
    */
-  public static function get($name): XtcRequestDefault{
+  public static function get($name, $options = []): XtcRequestDefault{
     return parent::get($name);
   }
 

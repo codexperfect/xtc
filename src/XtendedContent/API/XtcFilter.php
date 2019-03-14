@@ -11,10 +11,10 @@ namespace Drupal\xtc\XtendedContent\API;
 
 use Drupal\xtcsearch\PluginManager\XtcSearchFilter\XtcSearchFilterDefault;
 
-class XtcFilter extends PluginBase
+class XtcFilter extends XtcPluginBase
 {
 
-  public static function get($name): XtcSearchFilterDefault{
+  public static function get($name, $options = []): XtcSearchFilterDefault{
     return parent::get($name);
   }
 

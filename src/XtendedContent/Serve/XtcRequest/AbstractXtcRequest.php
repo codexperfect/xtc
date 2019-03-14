@@ -79,18 +79,19 @@ abstract class AbstractXtcRequest implements XtcRequestInterface
   /**
    * @param        $method
    * @param string $param
-   *
-   * @return $this
    */
   public function get($method, $param = '')
   {
     try {
       $this->client->init($method, $param);
       $content = $this->client->get();
-    } catch (RequestException $e) {
+    }
+    catch (RequestException $e) {
       $content = '';
     }
-    $this->setData($content);
+    if(!empty($content)){
+      $this->setData($content);
+    }
     return $this;
   }
 

@@ -18,6 +18,6 @@ interface XtcHandlerInterface
 
   public function setProfile(array $profile) : XtcHandlerPluginBase;
 
-  public function setOptions() : XtcHandlerPluginBase;
+  public function setOptions($options = []) : XtcHandlerPluginBase;
 
 }

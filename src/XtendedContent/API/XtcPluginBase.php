@@ -9,17 +9,22 @@
 namespace Drupal\xtc\XtendedContent\API;
 
 
-abstract class PluginBase
+abstract class XtcPluginBase
 {
 
-  public static function get($name){
+  public static function get($name, $options = []){
     return \Drupal::service(static::getService())
                   ->createInstance($name) ?? [];
   }
   public static function load($name){
-    return \Drupal::service(static::getService())
+    $definition = \Drupal::service(static::getService())
                   ->getDefinition($name) ?? [];
+    if(!empty($definition['override'])){
+      $definition = array_merge(self::load($definition['override']), $definition);
+    }
+    return $definition;
   }
+
   protected static function getService() : string {
     return '';
   }
