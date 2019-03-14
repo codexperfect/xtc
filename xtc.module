@@ -5,6 +5,7 @@
  * WebService Content module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\xtc\XtendedContent\API\Documentation;
 /**
@@ -34,4 +35,66 @@ function xtc_help($route_name, RouteMatchInterface $route_match) {
 function xtc_help_section_info_alter(&$info) {
   // Alter the header for the module overviews section.
   $info['hook_help']['header'] = t('XTC Overviews of modules');
+}
+
+
+/**
+ * Implements hook_entity_insert().
+ */
+function xtc_entity_insert(EntityInterface $entity) {
+  // Check if the entity is a content entity.
+  if ($entity->getEntityTypeId() == 'node') {
+    xtc_manage_index_entity($entity);
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ */
+function xtc_entity_update(EntityInterface $entity) {
+  // Check if the entity is a content entity.
+  if ($entity->getEntityTypeId() == 'node') {
+    xtc_manage_index_entity($entity);
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ */
+function xtc_entity_delete(EntityInterface $entity) {
+  // Check if the entity is a content entity.
+  if ($entity->getEntityTypeId() == 'node') {
+    xtc_unindex_entity($entity);
+  }
+}
+
+function xtc_manage_index_entity(EntityInterface $entity) {
+  if ($entity->get('status')->getString()) {
+    xtc_index_entity($entity);
+  }
+  else {
+    xtc_unindex_entity($entity);
+  }
+}
+
+function xtc_index_entity(EntityInterface $entity) {
+  try {
+    \Drupal::service('csoec_content.index_' . $entity->getEntityTypeId() . '_' . $entity->bundle())->setEid($entity->id())
+         ->index();
+  } finally{
+    return;
+  }
+}
+
+function xtc_unindex_entity(EntityInterface $entity) {
+  try {
+    \Drupal::service('csoec_content.index_' . $entity->getEntityTypeId() . '_' . $entity->bundle())->setEid($entity->id())
+           ->unindex();
+  } finally {
+    return;
+  }
 }

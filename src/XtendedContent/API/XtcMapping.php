@@ -11,10 +11,10 @@ namespace Drupal\xtc\XtendedContent\API;
 
 use Drupal\xtcelastica\PluginManager\XtcElasticaMappingManagerInterface;
 
-class XtcMapping extends PluginBase
+class XtcMapping extends XtcPluginBase
 {
 
-  public static function get($name): XtcElasticaMappingManagerInterface{
+  public static function get($name, $options = []): XtcElasticaMappingManagerInterface{
     return parent::get($name);
   }
 

@@ -9,6 +9,7 @@
 namespace Drupal\xtc\XtendedContent\API;
 
 
+use Drupal\Core\Link;
 use Drupal\xtcfile\Controller\XtcDocumentationController;
 
 class Documentation

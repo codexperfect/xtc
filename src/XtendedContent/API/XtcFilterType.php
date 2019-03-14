@@ -11,10 +11,10 @@ namespace Drupal\xtc\XtendedContent\API;
 
 use Drupal\xtcsearch\PluginManager\XtcSearchFilterType\XtcSearchFilterTypePluginBase;
 
-class XtcFilterType extends PluginBase
+class XtcFilterType extends XtcPluginBase
 {
 
-  public static function get($name): XtcSearchFilterTypePluginBase{
+  public static function get($name, $options = []): XtcSearchFilterTypePluginBase{
     return parent::get($name);
   }
 

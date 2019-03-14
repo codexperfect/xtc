@@ -4,7 +4,6 @@ namespace Drupal\xtc\PluginManager\XtcHandler;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Plugin\PluginInspectionInterface;
-use Drupal\xtc\XtendedContent\Serve\Client\ClientInterface;
 
 /**
  * Base class for xtc_handler plugins.
@@ -70,6 +69,5 @@ abstract class XtcHandlerPluginBase extends PluginBase
     $this->param = $param;
     return $this;
   }
-
 
 }
