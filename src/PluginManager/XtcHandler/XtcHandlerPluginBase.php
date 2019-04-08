@@ -50,7 +50,25 @@ abstract class XtcHandlerPluginBase extends PluginBase
       $getMethod = $this->method;
       $this->${"getMethod"}();
     }
-    return $this->content;
+    return $this;
+  }
+
+  public function getContent() {
+    return $this->get()
+                ->content();
+  }
+
+  public function content() {
+    return $this->content ?? null;
+  }
+
+  public function getValues() {
+    return $this->get()
+                ->values();
+  }
+
+  public function values() {
+    return $this->content['values'] ?? null;
   }
 
   public function setProfile(array $profile) : XtcHandlerPluginBase{

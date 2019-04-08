@@ -28,6 +28,26 @@ class XtcProfile extends XtcPluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
+  public static function getResults($name, $options = []){
+    $profile = self::load($name);
+    if(!empty($profile)){
+      if(!empty($profile['args'])){
+        $options = array_merge($options, $profile['args']);
+      }
+      $handler = XtcHandler::get($profile['type']);
+      return $handler->setProfile($profile)
+                 ->setOptions($options)
+                 ->getContent()
+        ;
+    }
+    return null;
+  }
+  /**
+   * @param       $name
+   * @param array $options
+   *
+   * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
+   */
   public static function getValues($name, $options = []){
     $profile = self::load($name);
     if(!empty($profile)){
@@ -37,7 +57,7 @@ class XtcProfile extends XtcPluginBase
       $handler = XtcHandler::get($profile['type']);
       return $handler->setProfile($profile)
                  ->setOptions($options)
-                 ->get()
+                 ->getValues()
         ;
     }
     return null;
@@ -56,11 +76,10 @@ class XtcProfile extends XtcPluginBase
         $options = array_merge($options, $profile['args']);
       }
       $handler = XtcHandler::get($profile['type']);
-      $filters = $handler->setProfile($profile)
+      return $handler->setProfile($profile)
                  ->setOptions($options)
                  ->getFilters()
         ;
-      return $filters;
     }
     return null;
   }

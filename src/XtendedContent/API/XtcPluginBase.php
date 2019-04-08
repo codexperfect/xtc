@@ -16,6 +16,7 @@ abstract class XtcPluginBase
     return \Drupal::service(static::getService())
                   ->createInstance($name) ?? [];
   }
+
   public static function load($name){
     $definition = \Drupal::service(static::getService())
                   ->getDefinition($name) ?? [];
