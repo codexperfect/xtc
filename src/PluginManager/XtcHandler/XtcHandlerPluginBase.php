@@ -63,6 +63,13 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return $this;
   }
 
+  public function delete() {
+  }
+
+  public function search() {
+    return $this->process();
+  }
+
   public function content() {
     return $this->content ?? null;
   }
