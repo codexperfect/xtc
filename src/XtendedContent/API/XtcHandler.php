@@ -32,21 +32,21 @@ class XtcHandler extends XtcPluginBase
   public static function getFile($name) : FileBase{
     $handler = self::getHandlerFromProfile($name);
     if(!empty($handler)){
-      return $handler->get();
+      return $handler->process();
     }
   }
 
   public static function getElastica($name, $options = []) : ElasticaBase {
     $handler = self::getHandlerFromProfile($name, $options);
     if(!empty($handler)){
-      return $handler->get();
+      return $handler->process();
     }
   }
 
   public static function getGraphQL($name) : GraphqlBase{
     $handler = XtcHandler::getHandlerFromProfile($name);
     if(!empty($handler)) {
-      return Json::decode($handler->get());
+      return Json::decode($handler->process());
     }
     return [];
   }
@@ -60,7 +60,7 @@ class XtcHandler extends XtcPluginBase
   public static function getHandlerFromProfile($name, $options = []){
     $profile = XtcProfile::load($name);
     if(!empty($profile)){
-      return self::get($profile['type'])
+      return self::get($profile['type'] . '_' . $profile['verb'])
                  ->setProfile($profile)
                  ->setOptions($options)
         ;

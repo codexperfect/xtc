@@ -15,7 +15,7 @@ use Drupal\xtc\XtendedContent\API\Config;
 use Drupal\xtc\XtendedContent\Serve\Client\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 
-abstract class AbstractXtcRequest implements XtcRequestInterface
+abstract class AbstractXtcRequestOFF implements XtcRequestInterface
 {
 
   /**

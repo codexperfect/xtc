@@ -10,7 +10,7 @@ namespace Drupal\xtc\XtendedContent\API;
 
 
 use Drupal\xtc\PluginManager\XtcRequest\XtcRequestDefault;
-use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequest;
+use Drupal\xtc\XtendedContent\Serve\XtcRequest\AbstractXtcRequestOFF;
 
 class XtcRequest extends XtcPluginBase
 {
@@ -42,7 +42,7 @@ class XtcRequest extends XtcPluginBase
   public static function getXtcRequestFromProfile($name){
     $profile = XtcProfile::load($name);
     $xtcrequest = (New $profile['service']($name));
-    if($xtcrequest instanceof AbstractXtcRequest){
+    if($xtcrequest instanceof AbstractXtcRequestOFF){
       $xtcrequest->setConfigfromPlugins();
     }
     return $xtcrequest;

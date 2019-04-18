@@ -93,7 +93,7 @@ class Documentation
     return XtcHandler::get($profile['type'])
                ->setProfile($profile)
                ->setOptions()
-               ->get();
+               ->process();
     ;
   }
 

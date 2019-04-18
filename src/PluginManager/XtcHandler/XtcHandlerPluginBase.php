@@ -45,7 +45,13 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return (string) $this->pluginDefinition['label'];
   }
 
-  public function get() {
+  public function create() {
+  }
+
+  public function set() {
+  }
+
+  public function process() {
     if(method_exists($this, $this->method)){
       $getMethod = $this->method;
       $this->${"getMethod"}();
@@ -53,22 +59,42 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return $this;
   }
 
-  public function getContent() {
-    return $this->get()
-                ->content();
+  public function update() {
+  }
+
+  public function delete() {
+  }
+
+  public function search() {
+    return $this->process();
   }
 
   public function content() {
     return $this->content ?? null;
   }
 
+  public function values() {
+    return $this->content['values'] ?? null;
+  }
+
+  public function getContent() {
+    return $this->process()
+                ->content();
+  }
+
   public function getValues() {
-    return $this->get()
+    return $this->process()
                 ->values();
   }
 
-  public function values() {
-    return $this->content['values'] ?? null;
+  public function searchContent() {
+    return $this->search()
+                ->content();
+  }
+
+  public function searchValues() {
+    return $this->search()
+                ->values();
   }
 
   public function setProfile(array $profile) : XtcHandlerPluginBase{

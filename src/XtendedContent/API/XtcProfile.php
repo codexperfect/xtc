@@ -28,7 +28,7 @@ class XtcProfile extends XtcPluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
-  public static function getResults($name, $options = []){
+  public static function searchResults($name, $options = []){
     $profile = self::load($name);
     if(!empty($profile)){
       if(!empty($profile['args'])){
@@ -37,7 +37,7 @@ class XtcProfile extends XtcPluginBase
       $handler = XtcHandler::get($profile['type']);
       return $handler->setProfile($profile)
                  ->setOptions($options)
-                 ->getContent()
+                 ->searchContent()
         ;
     }
     return null;
@@ -48,7 +48,7 @@ class XtcProfile extends XtcPluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
-  public static function getValues($name, $options = []){
+  public static function searchValues($name, $options = []){
     $profile = self::load($name);
     if(!empty($profile)){
       if(!empty($profile['args'])){
@@ -57,7 +57,7 @@ class XtcProfile extends XtcPluginBase
       $handler = XtcHandler::get($profile['type']);
       return $handler->setProfile($profile)
                  ->setOptions($options)
-                 ->getValues()
+                 ->searchValues()
         ;
     }
     return null;
@@ -69,7 +69,7 @@ class XtcProfile extends XtcPluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
-  public static function getFilters($name, $options = []){
+  public static function searchFilters($name, $options = []){
     $profile = self::load($name);
     if(!empty($profile)){
       if(!empty($profile['args'])){
@@ -78,7 +78,7 @@ class XtcProfile extends XtcPluginBase
       $handler = XtcHandler::get($profile['type']);
       return $handler->setProfile($profile)
                  ->setOptions($options)
-                 ->getFilters()
+                 ->searchFilters()
         ;
     }
     return null;
