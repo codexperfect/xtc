@@ -28,16 +28,16 @@ class XtcProfile extends XtcPluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
-  public static function searchResults($name, $options = []){
+  public static function results($name, $options = []){
     $profile = self::load($name);
     if(!empty($profile)){
       if(!empty($profile['args'])){
         $options = array_merge($options, $profile['args']);
       }
-      $handler = XtcHandler::get($profile['type']);
+      $handler = XtcHandler::get($profile['type'] . '_' . $profile['verb']);
       return $handler->setProfile($profile)
                  ->setOptions($options)
-                 ->searchContent()
+                 ->processContent()
         ;
     }
     return null;
@@ -48,16 +48,16 @@ class XtcProfile extends XtcPluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
-  public static function searchValues($name, $options = []){
+  public static function values($name, $options = []){
     $profile = self::load($name);
     if(!empty($profile)){
       if(!empty($profile['args'])){
         $options = array_merge($options, $profile['args']);
       }
-      $handler = XtcHandler::get($profile['type']);
+      $handler = XtcHandler::get($profile['type'] . '_' . $profile['verb']);
       return $handler->setProfile($profile)
                  ->setOptions($options)
-                 ->searchValues()
+                 ->processValues()
         ;
     }
     return null;
@@ -69,16 +69,16 @@ class XtcProfile extends XtcPluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
-  public static function searchFilters($name, $options = []){
+  public static function filters($name, $options = []){
     $profile = self::load($name);
     if(!empty($profile)){
       if(!empty($profile['args'])){
         $options = array_merge($options, $profile['args']);
       }
-      $handler = XtcHandler::get($profile['type']);
+      $handler = XtcHandler::get($profile['type'] . '_' . $profile['verb']);
       return $handler->setProfile($profile)
                  ->setOptions($options)
-                 ->searchFilters()
+                 ->processFilters()
         ;
     }
     return null;

@@ -14,6 +14,7 @@ use Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase;
 use Drupal\xtcelastica\Plugin\XtcHandler\ElasticaBase;
 use Drupal\xtcfile\Plugin\XtcHandler\FileBase;
 use Drupal\xtcgraphql\Plugin\XtcHandler\GraphqlBase;
+use Drupal\xtcguzzle\Plugin\XtcHandler\GuzzleBase;
 
 class XtcHandler extends XtcPluginBase
 {
@@ -27,6 +28,13 @@ class XtcHandler extends XtcPluginBase
 
   protected static function getService() : string {
     return 'plugin.manager.xtc_handler';
+  }
+
+  public static function getGuzzle($name) : GuzzleBase{
+    $handler = self::getHandlerFromProfile($name);
+    if(!empty($handler)){
+      return $handler->process();
+    }
   }
 
   public static function getFile($name) : FileBase{

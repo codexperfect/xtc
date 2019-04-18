@@ -45,12 +45,6 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return (string) $this->pluginDefinition['label'];
   }
 
-  public function create() {
-  }
-
-  public function set() {
-  }
-
   public function process() {
     if(method_exists($this, $this->method)){
       $getMethod = $this->method;
@@ -59,14 +53,14 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return $this;
   }
 
-  public function update() {
-  }
-
-  public function delete() {
-  }
-
-  public function search() {
-    return $this->process();
+  /**
+   * @param array $options
+   *
+   * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase
+   */
+  public function setOptions($options = []) : XtcHandlerPluginBase {
+    $this->options = $options;
+    return $this;
   }
 
   public function content() {
@@ -77,23 +71,13 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return $this->content['values'] ?? null;
   }
 
-  public function getContent() {
+  public function processContent() {
     return $this->process()
                 ->content();
   }
 
-  public function getValues() {
+  public function processValues() {
     return $this->process()
-                ->values();
-  }
-
-  public function searchContent() {
-    return $this->search()
-                ->content();
-  }
-
-  public function searchValues() {
-    return $this->search()
                 ->values();
   }
 
