@@ -28,16 +28,36 @@ class XtcProfile extends XtcPluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
-  public static function getValues($name, $options = []){
+  public static function results($name, $options = []){
     $profile = self::load($name);
     if(!empty($profile)){
       if(!empty($profile['args'])){
         $options = array_merge($options, $profile['args']);
       }
-      $handler = XtcHandler::get($profile['type']);
+      $handler = XtcHandler::get($profile['type'] . '_' . $profile['verb']);
       return $handler->setProfile($profile)
                  ->setOptions($options)
-                 ->get()
+                 ->processContent()
+        ;
+    }
+    return null;
+  }
+  /**
+   * @param       $name
+   * @param array $options
+   *
+   * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
+   */
+  public static function values($name, $options = []){
+    $profile = self::load($name);
+    if(!empty($profile)){
+      if(!empty($profile['args'])){
+        $options = array_merge($options, $profile['args']);
+      }
+      $handler = XtcHandler::get($profile['type'] . '_' . $profile['verb']);
+      return $handler->setProfile($profile)
+                 ->setOptions($options)
+                 ->processValues()
         ;
     }
     return null;
@@ -49,18 +69,17 @@ class XtcProfile extends XtcPluginBase
    *
    * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase|null
    */
-  public static function getFilters($name, $options = []){
+  public static function filters($name, $options = []){
     $profile = self::load($name);
     if(!empty($profile)){
       if(!empty($profile['args'])){
         $options = array_merge($options, $profile['args']);
       }
-      $handler = XtcHandler::get($profile['type']);
-      $filters = $handler->setProfile($profile)
+      $handler = XtcHandler::get($profile['type'] . '_' . $profile['verb']);
+      return $handler->setProfile($profile)
                  ->setOptions($options)
-                 ->getFilters()
+                 ->processFilters()
         ;
-      return $filters;
     }
     return null;
   }

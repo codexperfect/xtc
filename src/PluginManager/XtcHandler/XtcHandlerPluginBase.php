@@ -45,12 +45,40 @@ abstract class XtcHandlerPluginBase extends PluginBase
     return (string) $this->pluginDefinition['label'];
   }
 
-  public function get() {
+  public function process() {
     if(method_exists($this, $this->method)){
       $getMethod = $this->method;
       $this->${"getMethod"}();
     }
-    return $this->content;
+    return $this;
+  }
+
+  /**
+   * @param array $options
+   *
+   * @return \Drupal\xtc\PluginManager\XtcHandler\XtcHandlerPluginBase
+   */
+  public function setOptions($options = []) : XtcHandlerPluginBase {
+    $this->options = $options;
+    return $this;
+  }
+
+  public function content() {
+    return $this->content ?? null;
+  }
+
+  public function values() {
+    return $this->content['values'] ?? null;
+  }
+
+  public function processContent() {
+    return $this->process()
+                ->content();
+  }
+
+  public function processValues() {
+    return $this->process()
+                ->values();
   }
 
   public function setProfile(array $profile) : XtcHandlerPluginBase{

@@ -187,6 +187,17 @@ class Config
     return XtcHandler::getFile($name);
   }
 
+  // Guzzle
+  /**
+   * @param $name
+   *
+   * @return string
+   * @deprecated use XtcHandler::getGuzzle
+   */
+  public static function getGuzzle($name) {
+    return XtcHandler::getGuzzle($name);
+  }
+
 
   //------------//
 
